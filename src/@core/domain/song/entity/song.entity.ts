@@ -1,31 +1,23 @@
 import { BaseEntity } from 'src/@core/@shared/entity/base.entity';
 import { SongSource } from '../value-object/song-source.vo';
+import { isUrl } from 'src/@core/@shared/validators/string.validator';
 
-type SongEntityConstructor = BaseEntity.Constructor & {
+type SongConstructor = BaseEntity.Constructor & {
   title: string;
   artists: string[];
   lyricPreview: string;
-  musicImageLink: string;
+  musicImageLink?: string;
   source: SongSource;
 };
 
-const isUrl = (url: string) => {
-  try {
-    new URL(url);
-    return true;
-  } catch (e) {
-    return false;
-  }
-};
-
-export class SongEntity extends BaseEntity {
+export class Song extends BaseEntity {
   readonly title: string;
   readonly artists: string[];
   readonly lyricPreview: string;
   musicImageLink: string;
   source: SongSource;
 
-  constructor(props: SongEntityConstructor) {
+  constructor(props: SongConstructor) {
     super(props);
     this.title = props.title;
     this.artists = props.artists;
@@ -48,7 +40,7 @@ export class SongEntity extends BaseEntity {
       throw new Error('Invalid lyricPreview');
     }
 
-    if (!this.musicImageLink || !isUrl(this.musicImageLink)) {
+    if (this.musicImageLink && !isUrl(this.musicImageLink)) {
       throw new Error('Invalid musicImageLink');
     }
 

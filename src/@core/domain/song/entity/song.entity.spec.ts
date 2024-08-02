@@ -1,5 +1,5 @@
 import { SongSource } from '../value-object/song-source.vo';
-import { SongEntity } from './song.entity';
+import { Song } from './song.entity';
 
 describe('SongEntity', () => {
   it('should create a new SongEntity instance', () => {
@@ -10,7 +10,7 @@ describe('SongEntity', () => {
       musicImageLink: 'https://musicImageLink.com',
       source: new SongSource('provider', 'providerId'),
     };
-    const songEntity = new SongEntity(input);
+    const songEntity = new Song(input);
 
     expect(songEntity.title).toBe(input.title);
     expect(songEntity.artists).toBe(input.artists);
@@ -28,7 +28,7 @@ describe('SongEntity', () => {
       source: new SongSource('provider', 'providerId'),
     };
 
-    expect(() => new SongEntity(input)).toThrow('Invalid title');
+    expect(() => new Song(input)).toThrow('Invalid title');
   });
 
   it('should throw an error if artists is invalid', () => {
@@ -40,8 +40,8 @@ describe('SongEntity', () => {
       source: new SongSource('provider', 'providerId'),
     };
 
-    expect(() => new SongEntity(input)).toThrow('Invalid artists');
-    expect(() => new SongEntity({ ...input, artists: undefined })).toThrow(
+    expect(() => new Song(input)).toThrow('Invalid artists');
+    expect(() => new Song({ ...input, artists: undefined })).toThrow(
       'Invalid artists',
     );
   });
@@ -55,7 +55,7 @@ describe('SongEntity', () => {
       source: new SongSource('provider', 'providerId'),
     };
 
-    expect(() => new SongEntity(input)).toThrow('Invalid lyricPreview');
+    expect(() => new Song(input)).toThrow('Invalid lyricPreview');
   });
 
   it('should throw an error if musicImageLink is invalid', () => {
@@ -67,7 +67,7 @@ describe('SongEntity', () => {
       source: new SongSource('provider', 'providerId'),
     };
 
-    expect(() => new SongEntity(input)).toThrow('Invalid musicImageLink');
+    expect(() => new Song(input)).toThrow('Invalid musicImageLink');
   });
 
   it('should throw an error if source is invalid', () => {
@@ -79,6 +79,6 @@ describe('SongEntity', () => {
       source: undefined,
     };
 
-    expect(() => new SongEntity(input)).toThrow('Invalid source');
+    expect(() => new Song(input)).toThrow('Invalid source');
   });
 });
