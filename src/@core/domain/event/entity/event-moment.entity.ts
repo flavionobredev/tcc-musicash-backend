@@ -1,0 +1,78 @@
+import { BaseEntity } from 'src/@core/@shared/entity/base.entity';
+import { isUUID } from 'src/@core/@shared/validators/string.validator';
+import { EventMomentMember } from '../value-object/event-moment-member.vo';
+
+type EventMomentConstructor = BaseEntity.Constructor & {
+  title: string;
+  description?: string;
+  startDate?: Date;
+  endDate?: Date;
+  repertoireId?: string;
+  members?: EventMomentMember[];
+};
+
+export class EventMoment extends BaseEntity {
+  private _title: string;
+  private _description: string;
+  private _startDate: Date;
+  private _endDate: Date;
+  private _repertoireId: string;
+  private _members: EventMomentMember[];
+
+  constructor(props: EventMomentConstructor) {
+    super(props);
+    this._title = props.title;
+    this._description = props.description;
+    this._startDate = props.startDate;
+    this._endDate = props.endDate;
+    this._repertoireId = props.repertoireId;
+    this._members = props.members || [];
+    this.validate();
+  }
+
+  private validate() {
+    if (!this._title || this._title.length > 255) {
+      throw new Error('Invalid title');
+    }
+    if (this._startDate && this._endDate && this._endDate < this._startDate) {
+      throw new Error('Invalid endDate');
+    }
+    if (this._repertoireId && !isUUID(this._repertoireId)) {
+      throw new Error('Invalid repertoireId');
+    }
+    if (
+      this._members.length &&
+      !this._members.every((member) => member instanceof EventMomentMember)
+    ) {
+      throw new Error('Invalid members');
+    }
+  }
+
+  get title() {
+    return this._title;
+  }
+
+  get repertoireId() {
+    return this._repertoireId;
+  }
+
+  get members() {
+    return this._members;
+  }
+
+  changeRepertoireId(repertoireId: string) {
+    this._repertoireId = repertoireId;
+    this.validate();
+  }
+
+  addMember(member: EventMomentMember) {
+    const index = this._members.findIndex((m) => m.userId === member.userId);
+    if (index !== -1) {
+      this._members[index] = member;
+      this.validate();
+      return;
+    }
+    this._members.push(member);
+    this.validate();
+  }
+}
