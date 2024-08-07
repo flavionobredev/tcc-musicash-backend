@@ -88,4 +88,17 @@ describe('EventMomentEntity', () => {
 
     expect(eventMoment.members).toStrictEqual([singer, singerAndPlayer]);
   });
+
+  it('should be verify if the eventMoment is the same as the eventMoment passed', () => {
+    const eventMoment = new EventMoment({
+      title: 'Event Moment Title',
+    });
+
+    const anotherEventMoment = new EventMoment({
+      title: 'Another Event Moment Title',
+    });
+
+    expect(eventMoment.itsMe(anotherEventMoment)).toBeFalsy();
+    expect(eventMoment.itsMe(eventMoment)).toBeTruthy();
+  });
 });

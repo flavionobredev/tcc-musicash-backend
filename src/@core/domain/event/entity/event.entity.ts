@@ -1,5 +1,6 @@
 import { BaseEntity } from 'src/@core/@shared/entity/base.entity';
 import { isUUID } from 'src/@core/@shared/validators/string.validator';
+import { EventMoment } from './event-moment.entity';
 
 type EventConstructor = BaseEntity.Constructor & {
   title: string;
@@ -9,6 +10,7 @@ type EventConstructor = BaseEntity.Constructor & {
   membersIds?: string[];
   managersIds?: string[];
   endDate?: Date;
+  moments?: EventMoment[];
 };
 
 export class EventEntity extends BaseEntity {
@@ -19,6 +21,7 @@ export class EventEntity extends BaseEntity {
   private _membersIds: string[];
   private _managersIds: string[];
   private _ownerId: string;
+  private _moments: EventMoment[];
 
   constructor(props: EventConstructor) {
     super(props);
@@ -29,6 +32,7 @@ export class EventEntity extends BaseEntity {
     this._membersIds = props.membersIds || [];
     this._managersIds = props.managersIds || [];
     this._ownerId = props.ownerId;
+    this._moments = props.moments || [];
     this.validate();
   }
 
@@ -54,9 +58,27 @@ export class EventEntity extends BaseEntity {
     if (this._membersIds.length && this._membersIds.some((id) => !isUUID(id))) {
       throw new Error('Invalid membersIds');
     }
+    if (
+      this._moments.length &&
+      !this._moments.every((moment) => moment instanceof EventMoment)
+    ) {
+      throw new Error('Invalid moments');
+    }
   }
 
   get title() {
     return this._title;
+  }
+
+  get moments() {
+    return this._moments;
+  }
+
+  addMoment(moment: EventMoment) {
+    const exists = this._moments.some((m) => m.itsMe(moment));
+    if (exists) {
+      throw new Error('Moment already exists');
+    }
+    this._moments.push(moment);
   }
 }

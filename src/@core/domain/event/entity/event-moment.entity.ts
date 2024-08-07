@@ -75,4 +75,8 @@ export class EventMoment extends BaseEntity {
     this._members.push(member);
     this.validate();
   }
+
+  itsMe(eventMoment: EventMoment) {
+    return this.id === eventMoment.id;
+  }
 }

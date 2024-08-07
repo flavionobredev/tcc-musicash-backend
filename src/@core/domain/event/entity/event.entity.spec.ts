@@ -1,5 +1,6 @@
 import { randomUUID } from 'crypto';
 import { EventEntity } from './event.entity';
+import { EventMoment } from './event-moment.entity';
 
 describe('EventEntity', () => {
   it('should be possible to create an instance of EventEntity', () => {
@@ -83,5 +84,40 @@ describe('EventEntity', () => {
           membersIds: ['invalid-id'],
         }),
     ).toThrow('Invalid membersIds');
+  });
+
+  it("should be possible to add a moment to the event's moments", () => {
+    const event = new EventEntity({
+      title: 'Event Title',
+      description: 'Event Description',
+      ownerId: randomUUID(),
+      startDate: new Date(),
+    });
+
+    const moment = new EventMoment({
+      title: 'Event Moment Title',
+    });
+
+    event.addMoment(moment);
+
+    expect(event.moments.length).toBe(1);
+    expect(event.moments[0].title).toBe('Event Moment Title');
+  });
+
+  it('should throw an error if the moment already exists', () => {
+    const event = new EventEntity({
+      title: 'Event Title',
+      description: 'Event Description',
+      ownerId: randomUUID(),
+      startDate: new Date(),
+    });
+
+    const moment = new EventMoment({
+      title: 'Event Moment Title',
+    });
+
+    event.addMoment(moment);
+
+    expect(() => event.addMoment(moment)).toThrow('Moment already exists');
   });
 });
