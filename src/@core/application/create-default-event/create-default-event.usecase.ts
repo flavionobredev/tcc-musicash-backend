@@ -1,6 +1,7 @@
 import { EventMoment } from 'src/@core/domain/event/entity/event-moment.entity';
 import { EventEntity } from 'src/@core/domain/event/entity/event.entity';
 import { Repertoire } from 'src/@core/domain/repertoire/entity/repertoire.entity';
+import { RepertoireRepository } from 'src/@core/domain/repertoire/repository/repertoire.repository';
 
 export type CreateDefaultEventInputDTO = {
   title: string;
@@ -11,7 +12,10 @@ export type CreateDefaultEventInputDTO = {
 };
 
 export class CreateDefaultEventUsecase {
-  execute(input: CreateDefaultEventInputDTO) {
+
+  constructor(private readonly repertoireRepository: RepertoireRepository) { }
+
+  async execute(input: CreateDefaultEventInputDTO) {
     const repertoire = new Repertoire({
       title: `Repertório para "${input.title}"`,
     });
@@ -35,6 +39,9 @@ export class CreateDefaultEventUsecase {
     event.addMoment(moment);
 
     // TODO: save event and repertoire
+
+    await this.repertoireRepository.create(repertoire);
+
 
     return event;
   }
