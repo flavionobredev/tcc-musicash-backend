@@ -1,7 +1,10 @@
 import { EventMoment } from 'src/@core/domain/event/entity/event-moment.entity';
 import { EventEntity } from 'src/@core/domain/event/entity/event.entity';
+import { EventRepository } from 'src/@core/domain/event/repository/event.repository';
 import { Repertoire } from 'src/@core/domain/repertoire/entity/repertoire.entity';
 import { RepertoireRepository } from 'src/@core/domain/repertoire/repository/repertoire.repository';
+import { UserRepository } from 'src/@core/domain/user/repository/user.repository';
+import { UserNotFoundException } from '../../exception/user.exception';
 
 export type CreateDefaultEventInputDTO = {
   title: string;
@@ -12,10 +15,19 @@ export type CreateDefaultEventInputDTO = {
 };
 
 export class CreateDefaultEventUsecase {
-
-  constructor(private readonly repertoireRepository: RepertoireRepository) { }
+  constructor(
+    private readonly repertoireRepository: RepertoireRepository,
+    private readonly eventRepository: EventRepository,
+    private readonly userRepository: UserRepository,
+  ) {}
 
   async execute(input: CreateDefaultEventInputDTO) {
+    const user = await this.userRepository.findById(input.ownerId);
+
+    if (!user) {
+      throw new UserNotFoundException();
+    }
+
     const repertoire = new Repertoire({
       title: `Repertório para "${input.title}"`,
     });
@@ -38,10 +50,8 @@ export class CreateDefaultEventUsecase {
 
     event.addMoment(moment);
 
-    // TODO: save event and repertoire
-
     await this.repertoireRepository.create(repertoire);
-
+    await this.eventRepository.create(event);
 
     return event;
   }

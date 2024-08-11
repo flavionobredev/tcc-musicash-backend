@@ -74,6 +74,18 @@ export class EventEntity extends BaseEntity {
     return this._moments;
   }
 
+  get ownerId() {
+    return this._ownerId;
+  }
+
+  get startDate() {
+    return this._startDate;
+  }
+
+  get description() {
+    return this._description;
+  }
+
   addMoment(moment: EventMoment) {
     const exists = this._moments.some((m) => m.itsMe(moment));
     if (exists) {
