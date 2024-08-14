@@ -6,7 +6,7 @@ describe('SongSource', () => {
     const providerId = 'provider-id';
     const songSource = new SongSource(provider, providerId);
     expect(songSource.provider).toBe(provider);
-    expect(songSource.providerId).toBe(providerId);
+    expect(songSource.providerSongId).toBe(providerId);
   });
 
   it('should throw an error if the provider is invalid', () => {

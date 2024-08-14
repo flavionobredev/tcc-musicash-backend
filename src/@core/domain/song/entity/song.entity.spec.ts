@@ -7,7 +7,7 @@ describe('SongEntity', () => {
       title: 'title',
       artists: ['artist'],
       lyricPreview: 'lyricPreview',
-      musicImageLink: 'https://musicImageLink.com',
+      thumbnailLink: 'https://thumbnailLink.com',
       source: new SongSource('provider', 'providerId'),
     };
     const songEntity = new Song(input);
@@ -15,7 +15,7 @@ describe('SongEntity', () => {
     expect(songEntity.title).toBe(input.title);
     expect(songEntity.artists).toBe(input.artists);
     expect(songEntity.lyricPreview).toBe(input.lyricPreview);
-    expect(songEntity.musicImageLink).toBe(input.musicImageLink);
+    expect(songEntity.thumbnailLink).toBe(input.thumbnailLink);
     expect(songEntity.source).toStrictEqual(input.source);
   });
 
@@ -24,7 +24,7 @@ describe('SongEntity', () => {
       title: '',
       artists: ['artist'],
       lyricPreview: 'lyricPreview',
-      musicImageLink: 'https://musicImageLink.com',
+      thumbnailLink: 'https://thumbnailLink.com',
       source: new SongSource('provider', 'providerId'),
     };
 
@@ -36,7 +36,7 @@ describe('SongEntity', () => {
       title: 'title',
       artists: [],
       lyricPreview: 'lyricPreview',
-      musicImageLink: 'https://musicImageLink.com',
+      thumbnailLink: 'https://thumbnailLink.com',
       source: new SongSource('provider', 'providerId'),
     };
 
@@ -51,23 +51,23 @@ describe('SongEntity', () => {
       title: 'title',
       artists: ['artist'],
       lyricPreview: '',
-      musicImageLink: 'https://musicImageLink.com',
+      thumbnailLink: 'https://thumbnailLink.com',
       source: new SongSource('provider', 'providerId'),
     };
 
     expect(() => new Song(input)).toThrow('Invalid lyricPreview');
   });
 
-  it('should throw an error if musicImageLink is invalid', () => {
+  it('should throw an error if thumbnailLink is invalid', () => {
     const input = {
       title: 'title',
       artists: ['artist'],
       lyricPreview: 'lyricPreview',
-      musicImageLink: 'invalid',
+      thumbnailLink: 'invalid',
       source: new SongSource('provider', 'providerId'),
     };
 
-    expect(() => new Song(input)).toThrow('Invalid musicImageLink');
+    expect(() => new Song(input)).toThrow('Invalid thumbnailLink');
   });
 
   it('should throw an error if source is invalid', () => {
@@ -75,7 +75,7 @@ describe('SongEntity', () => {
       title: 'title',
       artists: ['artist'],
       lyricPreview: 'lyricPreview',
-      musicImageLink: 'https://musicImageLink.com',
+      thumbnailLink: 'https://thumbnailLink.com',
       source: undefined,
     };
 

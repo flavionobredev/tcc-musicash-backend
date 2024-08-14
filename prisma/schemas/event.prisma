@@ -1,0 +1,44 @@
+model Events {
+  id           String         @id @default(uuid()) @map("id")
+  title        String         @map("title")
+  description  String?        @map("description")
+  startDate    String         @map("start_date")
+  endDate      String         @map("end_date")
+  ownerId      String         @map("owner_id")
+  owner        Users          @relation(fields: [ownerId], references: [id])
+  eventMoments EventMoments[]
+  createdAt    DateTime       @default(now()) @map("created_at")
+  updatedAt    DateTime       @default(now()) @updatedAt @map("updated_at")
+
+  @@map("events")
+}
+
+model EventMoments {
+  id          Int     @id @default(autoincrement()) @map("id")
+  title       String  @map("title")
+  description String? @map("description")
+  startDate   String  @map("start_date")
+  endDate     String  @map("end_date")
+
+  // ADD REPERTOIRE 
+  repertoireId       String?              @map("repertoire_id")
+  eventId            String               @map("events_id")
+  Event              Events               @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  EventMomentMembers EventMomentMembers[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  @@map("event_moments")
+}
+
+model EventMomentMembers {
+  id            Int          @id @default(autoincrement()) @map("id")
+  eventMoment   EventMoments @relation(fields: [eventMomentId], references: [id], onDelete: Cascade)
+  eventMomentId Int          @map("event_moment_id")
+  userId        String       @map("user_id")
+  user          Users        @relation(fields: [userId], references: [id])
+  attributes    Json         @map("attributes")
+
+  @@map("event_moment_members")
+}

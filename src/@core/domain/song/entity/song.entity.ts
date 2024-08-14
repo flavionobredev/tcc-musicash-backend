@@ -6,7 +6,7 @@ type SongConstructor = BaseEntity.Constructor & {
   title: string;
   artists: string[];
   lyricPreview: string;
-  musicImageLink?: string;
+  thumbnailLink?: string;
   source: SongSource;
 };
 
@@ -14,7 +14,7 @@ export class Song extends BaseEntity {
   readonly title: string;
   readonly artists: string[];
   readonly lyricPreview: string;
-  musicImageLink: string;
+  thumbnailLink: string;
   source: SongSource;
 
   constructor(props: SongConstructor) {
@@ -22,7 +22,7 @@ export class Song extends BaseEntity {
     this.title = props.title;
     this.artists = props.artists;
     this.lyricPreview = props.lyricPreview;
-    this.musicImageLink = props.musicImageLink;
+    this.thumbnailLink = props.thumbnailLink;
     this.source = props.source;
     this.validate();
   }
@@ -40,8 +40,8 @@ export class Song extends BaseEntity {
       throw new Error('Invalid lyricPreview');
     }
 
-    if (this.musicImageLink && !isUrl(this.musicImageLink)) {
-      throw new Error('Invalid musicImageLink');
+    if (this.thumbnailLink && !isUrl(this.thumbnailLink)) {
+      throw new Error('Invalid thumbnailLink');
     }
 
     if (!this.source) {

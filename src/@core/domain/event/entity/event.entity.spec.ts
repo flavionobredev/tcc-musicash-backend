@@ -60,31 +60,31 @@ describe('EventEntity', () => {
     ).toThrow('Invalid endDate');
   });
 
-  it('should throw an error if the managersIds are invalid UUID', () => {
-    expect(
-      () =>
-        new EventEntity({
-          title: 'Event Title',
-          description: 'Event Description',
-          ownerId: randomUUID(),
-          startDate: new Date(),
-          managersIds: ['invalid-id'],
-        }),
-    ).toThrow('Invalid managersIds');
-  });
+  // it('should throw an error if the managersIds are invalid UUID', () => {
+  //   expect(
+  //     () =>
+  //       new EventEntity({
+  //         title: 'Event Title',
+  //         description: 'Event Description',
+  //         ownerId: randomUUID(),
+  //         startDate: new Date(),
+  //         managersIds: ['invalid-id'],
+  //       }),
+  //   ).toThrow('Invalid managersIds');
+  // });
 
-  it('should throw an error if the membersIds are invalid UUID', () => {
-    expect(
-      () =>
-        new EventEntity({
-          title: 'Event Title',
-          description: 'Event Description',
-          ownerId: randomUUID(),
-          startDate: new Date(),
-          membersIds: ['invalid-id'],
-        }),
-    ).toThrow('Invalid membersIds');
-  });
+  // it('should throw an error if the membersIds are invalid UUID', () => {
+  //   expect(
+  //     () =>
+  //       new EventEntity({
+  //         title: 'Event Title',
+  //         description: 'Event Description',
+  //         ownerId: randomUUID(),
+  //         startDate: new Date(),
+  //         membersIds: ['invalid-id'],
+  //       }),
+  //   ).toThrow('Invalid membersIds');
+  // });
 
   it("should be possible to add a moment to the event's moments", () => {
     const event = new EventEntity({

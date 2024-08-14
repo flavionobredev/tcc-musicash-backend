@@ -8,7 +8,7 @@ export enum EventMomentMemberAttribute {
 
 export class EventMomentMember {
   userId: string;
-  attribute: EventMomentMemberAttribute[];
+  attributes: EventMomentMemberAttribute[];
 
   constructor(userId: string, attribute: EventMomentMemberAttribute[]) {
     if (!userId || !isUUID(userId)) {
@@ -22,6 +22,6 @@ export class EventMomentMember {
       throw new Error('Invalid attribute');
     }
     this.userId = userId;
-    this.attribute = attribute;
+    this.attributes = attribute;
   }
 }

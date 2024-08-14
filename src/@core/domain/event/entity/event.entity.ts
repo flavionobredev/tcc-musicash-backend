@@ -7,8 +7,8 @@ type EventConstructor = BaseEntity.Constructor & {
   ownerId: string;
   startDate: Date;
   description?: string;
-  membersIds?: string[];
-  managersIds?: string[];
+  // membersIds?: string[];
+  // managersIds?: string[];
   endDate?: Date;
   moments?: EventMoment[];
 };
@@ -18,8 +18,8 @@ export class EventEntity extends BaseEntity {
   private _description: string;
   private _startDate: Date;
   private _endDate: Date;
-  private _membersIds: string[];
-  private _managersIds: string[];
+  // private _membersIds: string[];
+  // private _managersIds: string[];
   private _ownerId: string;
   private _moments: EventMoment[];
 
@@ -29,8 +29,8 @@ export class EventEntity extends BaseEntity {
     this._description = props.description;
     this._startDate = props.startDate;
     this._endDate = props.endDate;
-    this._membersIds = props.membersIds || [];
-    this._managersIds = props.managersIds || [];
+    // this._membersIds = props.membersIds || [];
+    // this._managersIds = props.managersIds || [];
     this._ownerId = props.ownerId;
     this._moments = props.moments || [];
     this.validate();
@@ -49,15 +49,15 @@ export class EventEntity extends BaseEntity {
     if (this._endDate && this._endDate < this._startDate) {
       throw new Error('Invalid endDate');
     }
-    if (
-      this._managersIds.length &&
-      this._managersIds.some((id) => !isUUID(id))
-    ) {
-      throw new Error('Invalid managersIds');
-    }
-    if (this._membersIds.length && this._membersIds.some((id) => !isUUID(id))) {
-      throw new Error('Invalid membersIds');
-    }
+    // if (
+    //   this._managersIds.length &&
+    //   this._managersIds.some((id) => !isUUID(id))
+    // ) {
+    //   throw new Error('Invalid managersIds');
+    // }
+    // if (this._membersIds.length && this._membersIds.some((id) => !isUUID(id))) {
+    //   throw new Error('Invalid membersIds');
+    // }
     if (
       this._moments.length &&
       !this._moments.every((moment) => moment instanceof EventMoment)
