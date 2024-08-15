@@ -1,8 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import { isUUID } from '../validators/string.validator';
 
-
-
 export class BaseEntity {
   public readonly id: string;
   public readonly createdAt: Date;

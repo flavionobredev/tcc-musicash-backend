@@ -25,9 +25,6 @@ describe('PrismaRepertoireRepository', () => {
   beforeAll(async () => {
     prisma = await makeTestPrismaClient('testing.db');
     repository = new PrismaRepertoireRepository(prisma);
-  });
-
-  beforeAll(async () => {
     await prisma.repertoire.deleteMany();
     await prisma.repertoireSongs.deleteMany();
     await prisma.songs.deleteMany();
