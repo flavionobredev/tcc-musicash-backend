@@ -20,8 +20,8 @@ model EventMoments {
   startDate   String  @map("start_date")
   endDate     String  @map("end_date")
 
-  // ADD REPERTOIRE 
   repertoireId       String?              @map("repertoire_id")
+  Repertoire         Repertoire?          @relation(fields: [repertoireId], references: [id], onDelete: Cascade)
   eventId            String               @map("events_id")
   Event              Events               @relation(fields: [eventId], references: [id], onDelete: Cascade)
   EventMomentMembers EventMomentMembers[]

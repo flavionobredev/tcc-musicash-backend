@@ -73,6 +73,8 @@ describe('PrismaSongRepository', () => {
           provider: 'provider',
           providerSongId: id,
         },
+        createdAt: result.createdAt,
+        updatedAt: result.updatedAt,
       }),
     );
   });
