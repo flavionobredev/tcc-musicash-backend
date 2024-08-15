@@ -1,9 +1,9 @@
-import { PrismaRepertoireRepository } from './prisma.repository';
-import { randomUUID } from 'node:crypto';
-import { Repertoire } from 'src/@core/domain/repertoire/entity/repertoire.entity';
 import { PrismaClient } from '@prisma/client';
+import { randomUUID } from 'node:crypto';
 import { RepertoireSong } from 'src/@core/domain/repertoire/entity/repertoire-song.entity';
+import { Repertoire } from 'src/@core/domain/repertoire/entity/repertoire.entity';
 import { makeTestPrismaClient } from 'test/@shared/utils/prisma/db-connection.util';
+import { PrismaRepertoireRepository } from './prisma.repository';
 
 describe('PrismaRepertoireRepository', () => {
   let prisma: PrismaClient;

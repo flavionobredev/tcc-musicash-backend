@@ -1,7 +1,7 @@
 import { randomUUID } from 'crypto';
 import {
-  EventMomentMember,
-  EventMomentMemberAttribute,
+    EventMomentMember,
+    EventMomentMemberAttribute,
 } from './event-moment-member.vo';
 
 describe('EventMomentMemberValueObject', () => {

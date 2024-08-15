@@ -1,6 +1,6 @@
 import { BaseEntity } from 'src/@core/@shared/entity/base.entity';
-import { SongSource } from '../value-object/song-source.vo';
 import { isUrl } from 'src/@core/@shared/validators/string.validator';
+import { SongSource } from '../value-object/song-source.vo';
 
 type SongConstructor = BaseEntity.Constructor & {
   title: string;

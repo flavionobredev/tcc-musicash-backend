@@ -1,6 +1,6 @@
-import { randomUUID } from 'crypto';
-import { EventEntity } from './event.entity';
+import { randomUUID } from 'node:crypto';
 import { EventMoment } from './event-moment.entity';
+import { EventEntity } from './event.entity';
 
 describe('EventEntity', () => {
   it('should be possible to create an instance of EventEntity', () => {

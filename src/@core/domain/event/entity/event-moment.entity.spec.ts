@@ -1,9 +1,9 @@
 import { randomUUID } from 'crypto';
-import { EventMoment } from './event-moment.entity';
 import {
   EventMomentMember,
   EventMomentMemberAttribute,
 } from '../value-object/event-moment-member.vo';
+import { EventMoment } from './event-moment.entity';
 
 describe('EventMomentEntity', () => {
   it('should be possible to create an instance of EventMoment', () => {

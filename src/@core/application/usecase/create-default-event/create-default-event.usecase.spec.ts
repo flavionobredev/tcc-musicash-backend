@@ -1,9 +1,9 @@
 import { randomUUID } from 'crypto';
-import { RepertoireRepository } from 'src/@core/domain/repertoire/repository/repertoire.repository';
-import { CreateDefaultEventUsecase } from './create-default-event.usecase';
 import { EventRepository } from 'src/@core/domain/event/repository/event.repository';
+import { RepertoireRepository } from 'src/@core/domain/repertoire/repository/repertoire.repository';
 import { UserRepository } from 'src/@core/domain/user/repository/user.repository';
 import { UserNotFoundException } from '../../exception/user.exception';
+import { CreateDefaultEventUsecase } from './create-default-event.usecase';
 
 describe('CreateDefaultEventUsecase', () => {
   const repertoireRepositorySpy: RepertoireRepository = {
