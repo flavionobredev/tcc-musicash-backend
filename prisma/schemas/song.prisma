@@ -15,8 +15,9 @@ model Songs {
 }
 
 model RepertoireSongs {
-  id          Int     @id @default(autoincrement()) @map("id")
+  id          String  @id @default(uuid()) @map("id")
   lyrics      String  @map("lyrics")
+  title       String  @map("title")
   label       String? @map("label")
   youtubeLink String? @map("youtube_link")
 

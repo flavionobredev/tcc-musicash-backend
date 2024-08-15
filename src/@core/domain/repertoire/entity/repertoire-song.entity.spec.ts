@@ -4,7 +4,6 @@ describe('RepertoireSongEntity', () => {
   it('should be possible to create a new repertoire song', () => {
     const repertoireSong = new RepertoireSong({
       title: 'Repertoire Song',
-      artits: ['artist'],
       lyrics: 'lyrics',
       songId: 'songId',
     });
@@ -15,7 +14,6 @@ describe('RepertoireSongEntity', () => {
   it('shoulde be possible change the title', () => {
     const repertoireSong = new RepertoireSong({
       title: 'Repertoire Song',
-      artits: ['artist'],
       lyrics: 'lyrics',
       songId: 'songId',
     });
@@ -26,7 +24,6 @@ describe('RepertoireSongEntity', () => {
   it('should throw an error if the title is invalid in change', () => {
     const repertoireSong = new RepertoireSong({
       title: 'Repertoire Song',
-      artits: ['artist'],
       lyrics: 'lyrics',
       songId: 'songId',
     });
@@ -36,7 +33,6 @@ describe('RepertoireSongEntity', () => {
   it('should be possible add a youtube link', () => {
     const repertoireSong = new RepertoireSong({
       title: 'Repertoire Song',
-      artits: ['artist'],
       lyrics: 'lyrics',
       songId: 'songId',
     });
@@ -47,7 +43,6 @@ describe('RepertoireSongEntity', () => {
   it('should throw an error if the youtube link is invalid', () => {
     const repertoireSong = new RepertoireSong({
       title: 'Repertoire Song',
-      artits: ['artist'],
       lyrics: 'lyrics',
       songId: 'songId',
     });
@@ -59,7 +54,6 @@ describe('RepertoireSongEntity', () => {
   it('should be possible update the lyrics', () => {
     const repertoireSong = new RepertoireSong({
       title: 'Repertoire Song',
-      artits: ['artist'],
       lyrics: 'lyrics',
       songId: 'songId',
     });
@@ -70,7 +64,6 @@ describe('RepertoireSongEntity', () => {
   it('should throw an error if the lyrics is invalid', () => {
     const repertoireSong = new RepertoireSong({
       title: 'Repertoire Song',
-      artits: ['artist'],
       lyrics: 'lyrics',
       songId: 'songId',
     });
@@ -80,7 +73,6 @@ describe('RepertoireSongEntity', () => {
   it('should be possible add a label', () => {
     const repertoireSong = new RepertoireSong({
       title: 'Repertoire Song',
-      artits: ['artist'],
       lyrics: 'lyrics',
       songId: 'songId',
     });

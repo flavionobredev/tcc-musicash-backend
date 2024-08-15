@@ -1,8 +1,12 @@
 import { PrismaClient } from '@prisma/client';
 import { spawn } from 'node:child_process';
 import { join } from 'node:path';
+import { rm } from 'node:fs/promises';
 
 let client: PrismaClient;
+
+const makeDbFilePath = (filename: string) =>
+  join(process.cwd(), 'prisma', filename);
 
 function pushSchemaToPrismaDB(dbPath: string) {
   return new Promise((resolve, reject) => {
@@ -11,7 +15,6 @@ function pushSchemaToPrismaDB(dbPath: string) {
       `export DATABASE_URL=${dbPath} && npx`,
       ['prisma', 'db', 'push', '--accept-data-loss', `--schema=${schemaPath}`],
       {
-        stdio: 'inherit',
         shell: true,
       },
     );
@@ -27,11 +30,18 @@ function pushSchemaToPrismaDB(dbPath: string) {
   });
 }
 
-export async function makeTestPrismaClient(dbPath: string) {
+async function deleteOldDB(filePath: string) {
+  await rm(filePath, { force: true }).catch((err) => {
+    console.log('error ao remover', err);
+  });
+}
+
+export async function makeTestPrismaClient(filename: string) {
   if (client) return client;
-  await pushSchemaToPrismaDB(dbPath);
+  await deleteOldDB(makeDbFilePath(filename));
+  await pushSchemaToPrismaDB(`file:${makeDbFilePath(filename)}`);
   const prisma = new PrismaClient({
-    datasourceUrl: dbPath,
+    datasourceUrl: `file:${makeDbFilePath(filename)}`,
   });
 
   client = prisma;

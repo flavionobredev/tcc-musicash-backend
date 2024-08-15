@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { randomUUID } from 'node:crypto';
 import { Song } from 'src/@core/domain/song/entity/song.entity';
-import { makeTestPrismaClient } from 'test/@shared/utils/prisma.util';
+import { makeTestPrismaClient } from 'test/@shared/utils/prisma/db-connection.util';
 import { PrismaSongRepository } from './prisma.repository';
 
 describe('PrismaSongRepository', () => {
@@ -10,9 +10,8 @@ describe('PrismaSongRepository', () => {
   let repository: PrismaSongRepository;
 
   beforeAll(async () => {
-    prisma = await makeTestPrismaClient('file:./testing.db');
+    prisma = await makeTestPrismaClient('testing.db');
     repository = new PrismaSongRepository(prisma);
-    await prisma.songs.deleteMany();
   });
 
   it('should create a song', async () => {

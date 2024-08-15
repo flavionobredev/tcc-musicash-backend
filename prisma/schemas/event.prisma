@@ -14,7 +14,7 @@ model Events {
 }
 
 model EventMoments {
-  id          Int     @id @default(autoincrement()) @map("id")
+  id          String  @id @default(uuid()) @map("id")
   title       String  @map("title")
   description String? @map("description")
   startDate   String  @map("start_date")
@@ -33,9 +33,9 @@ model EventMoments {
 }
 
 model EventMomentMembers {
-  id            Int          @id @default(autoincrement()) @map("id")
+  id            String       @id @default(uuid()) @map("id")
   eventMoment   EventMoments @relation(fields: [eventMomentId], references: [id], onDelete: Cascade)
-  eventMomentId Int          @map("event_moment_id")
+  eventMomentId String       @map("event_moment_id")
   userId        String       @map("user_id")
   user          Users        @relation(fields: [userId], references: [id])
   attributes    String       @map("attributes")

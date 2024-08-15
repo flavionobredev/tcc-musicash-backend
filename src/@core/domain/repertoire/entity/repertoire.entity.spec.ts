@@ -1,5 +1,3 @@
-import { Song } from '../../song/entity/song.entity';
-import { SongSource } from '../../song/value-object/song-source.vo';
 import { RepertoireSong } from './repertoire-song.entity';
 import { Repertoire } from './repertoire.entity';
 
@@ -48,7 +46,6 @@ describe('RepertoireEntity', () => {
     });
     const repertoireSong = new RepertoireSong({
       title: 'Repertoire Song',
-      artits: ['artist'],
       lyrics: 'lyrics',
       songId: 'songId',
     });

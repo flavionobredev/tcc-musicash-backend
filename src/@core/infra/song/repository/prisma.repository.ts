@@ -1,14 +1,10 @@
 import { PrismaClient } from '@prisma/client';
 import { Song } from 'src/@core/domain/song/entity/song.entity';
 import { SongRepository } from 'src/@core/domain/song/repository/song.repository';
-
-function stringArraytoString(array: string[]) {
-  return array.join(';;');
-}
-
-function stringToStringArray(str: string) {
-  return str.split(';;').filter((item) => item);
-}
+import {
+  stringArraytoString,
+  stringToStringArray,
+} from 'test/@shared/utils/prisma/array-parser.util';
 
 export class PrismaSongRepository implements SongRepository {
   constructor(private readonly prisma: PrismaClient) {}

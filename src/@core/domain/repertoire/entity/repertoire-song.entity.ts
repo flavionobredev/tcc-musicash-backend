@@ -3,7 +3,6 @@ import { isUrl } from 'src/@core/@shared/validators/string.validator';
 
 type RepertoireSongConstructor = BaseEntity.Constructor & {
   title: string;
-  artits: string[];
   lyrics: string;
   songId: string;
   label?: string;
@@ -11,7 +10,6 @@ type RepertoireSongConstructor = BaseEntity.Constructor & {
 };
 
 export class RepertoireSong extends BaseEntity {
-  readonly artists: string[];
   readonly songId: string;
   private _title: string;
   private _lyrics: string;
@@ -21,7 +19,6 @@ export class RepertoireSong extends BaseEntity {
   constructor(props: RepertoireSongConstructor) {
     super(props);
     this._title = props.title;
-    this.artists = props.artits;
     this._lyrics = props.lyrics;
     this.songId = props.songId;
     this._youtubeLink = props.youtubeLink;
@@ -36,10 +33,6 @@ export class RepertoireSong extends BaseEntity {
 
     if (this._title.length > 255) {
       throw new Error(`invalid title length: ${this._title.length}`);
-    }
-
-    if (!this.artists || this.artists.length === 0) {
-      throw new Error('Invalid artists');
     }
 
     if (!this._lyrics) {
