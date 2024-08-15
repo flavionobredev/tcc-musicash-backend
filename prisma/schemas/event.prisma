@@ -38,7 +38,7 @@ model EventMomentMembers {
   eventMomentId Int          @map("event_moment_id")
   userId        String       @map("user_id")
   user          Users        @relation(fields: [userId], references: [id])
-  attributes    Json         @map("attributes")
+  attributes    String       @map("attributes")
 
   @@map("event_moment_members")
 }
