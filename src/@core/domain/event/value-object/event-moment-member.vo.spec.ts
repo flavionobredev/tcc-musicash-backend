@@ -1,10 +1,10 @@
 import { randomUUID } from 'crypto';
 import {
-    EventMomentMember,
-    EventMomentMemberAttribute,
+  EventMomentMember,
+  EventMomentMemberAttribute,
 } from './event-moment-member.vo';
 
-describe('EventMomentMemberValueObject', () => {
+describe('EventMomentMemberValueObject unit test', () => {
   it('should be possible to create an instance of EventMomentMemberValueObject', () => {
     const eventMomentMember = new EventMomentMember(randomUUID(), [
       EventMomentMemberAttribute.PLAYER,

@@ -1,7 +1,7 @@
 import { SongSource } from '../value-object/song-source.vo';
 import { Song } from './song.entity';
 
-describe('SongEntity', () => {
+describe('SongEntity unit test', () => {
   it('should create a new SongEntity instance', () => {
     const input = {
       title: 'title',

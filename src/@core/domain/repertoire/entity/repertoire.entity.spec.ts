@@ -1,7 +1,7 @@
 import { RepertoireSong } from './repertoire-song.entity';
 import { Repertoire } from './repertoire.entity';
 
-describe('RepertoireEntity', () => {
+describe('RepertoireEntity unit test', () => {
   it('should be possible to create a new repertoire', () => {
     const repertoire = new Repertoire({
       title: 'Repertoire Name',

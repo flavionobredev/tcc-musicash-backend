@@ -5,7 +5,7 @@ import {
 } from '../value-object/event-moment-member.vo';
 import { EventMoment } from './event-moment.entity';
 
-describe('EventMomentEntity', () => {
+describe('EventMomentEntity unit test', () => {
   it('should be possible to create an instance of EventMoment', () => {
     const eventMoment = new EventMoment({
       title: 'Event Moment Title',

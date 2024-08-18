@@ -1,6 +1,6 @@
 import { SongSource } from './song-source.vo';
 
-describe('SongSource', () => {
+describe('SongSource unit test', () => {
   it('should be created with a provider and providerId', () => {
     const provider = 'provider';
     const providerId = 'provider-id';

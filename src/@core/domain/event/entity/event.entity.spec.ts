@@ -2,7 +2,7 @@ import { randomUUID } from 'node:crypto';
 import { EventMoment } from './event-moment.entity';
 import { EventEntity } from './event.entity';
 
-describe('EventEntity', () => {
+describe('EventEntity unit test', () => {
   it('should be possible to create an instance of EventEntity', () => {
     const event = new EventEntity({
       title: 'Event Title',
