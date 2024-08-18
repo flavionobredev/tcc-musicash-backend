@@ -60,6 +60,18 @@ export class EventMoment extends BaseEntity {
     return this._members;
   }
 
+  get startDate() {
+    return this._startDate;
+  }
+
+  get endDate() {
+    return this._endDate;
+  }
+
+  get description() {
+    return this._description;
+  }
+
   changeRepertoireId(repertoireId: string) {
     this._repertoireId = repertoireId;
     this.validate();

@@ -82,6 +82,10 @@ export class EventEntity extends BaseEntity {
     return this._startDate;
   }
 
+  get endDate() {
+    return this._endDate;
+  }
+
   get description() {
     return this._description;
   }
