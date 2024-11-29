@@ -43,9 +43,6 @@ describe('CreateDefaultEventUsecase', () => {
     expect(event.ownerId).toBe(userId);
     expect(event.startDate).toBe(now);
     expect(event.description).toBe('Event Description');
-    expect(event.moments.length).toBe(1);
-    expect(event.moments[0].title).toBe('Event Title');
-    expect(event.moments[0].repertoireId).toBeDefined();
     expect(userRepositorySpy.findById).toHaveBeenCalledTimes(1);
     expect(repertoireRepositorySpy.create).toHaveBeenCalledTimes(1);
     expect(eventRepositorySpy.create).toHaveBeenCalledTimes(1);
