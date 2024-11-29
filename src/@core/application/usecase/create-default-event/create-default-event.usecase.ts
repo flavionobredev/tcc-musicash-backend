@@ -14,6 +14,14 @@ export type CreateDefaultEventInputDTO = {
   description?: string;
 };
 
+export type CreateDefaultEventOutputDTO = {
+  title: string;
+  ownerId: string;
+  startDate: Date;
+  endDate: Date;
+  description: string;
+};
+
 export class CreateDefaultEventUsecase {
   constructor(
     private readonly repertoireRepository: RepertoireRepository,
@@ -21,7 +29,9 @@ export class CreateDefaultEventUsecase {
     private readonly userRepository: UserRepository,
   ) {}
 
-  async execute(input: CreateDefaultEventInputDTO) {
+  async execute(
+    input: CreateDefaultEventInputDTO,
+  ): Promise<CreateDefaultEventOutputDTO> {
     const user = await this.userRepository.findById(input.ownerId);
 
     if (!user) {
@@ -53,6 +63,12 @@ export class CreateDefaultEventUsecase {
     await this.repertoireRepository.create(repertoire);
     await this.eventRepository.create(event);
 
-    return event;
+    return {
+      title: event.title,
+      ownerId: event.ownerId,
+      startDate: event.startDate,
+      endDate: event.endDate,
+      description: event.description,
+    };
   }
 }

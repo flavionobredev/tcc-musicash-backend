@@ -1,4 +1,5 @@
 import { BaseEntity } from 'src/@core/@shared/entity/base.entity';
+import { EntityValidationException } from 'src/@core/@shared/exception/domain.exception';
 import { RepertoireSong } from './repertoire-song.entity';
 
 type RepertoireConstructor = BaseEntity.Constructor & {
@@ -20,7 +21,7 @@ export class Repertoire extends BaseEntity {
 
   private validate() {
     if (!this._title) {
-      throw new Error('Invalid title');
+      throw new EntityValidationException('Invalid title');
     }
   }
 

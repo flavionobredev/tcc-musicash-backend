@@ -1,4 +1,5 @@
 import { BaseEntity } from 'src/@core/@shared/entity/base.entity';
+import { EntityValidationException } from 'src/@core/@shared/exception/domain.exception';
 import { isUUID } from 'src/@core/@shared/validators/string.validator';
 import { EventMoment } from './event-moment.entity';
 
@@ -38,31 +39,31 @@ export class EventEntity extends BaseEntity {
 
   private validate() {
     if (!this._title || this._title.length > 255) {
-      throw new Error('Invalid title');
+      throw new EntityValidationException('Invalid title');
     }
     if (!isUUID(this._ownerId)) {
-      throw new Error('Invalid ownerId');
+      throw new EntityValidationException('Invalid ownerId');
     }
     if (!this._startDate) {
-      throw new Error('Invalid startDate');
+      throw new EntityValidationException('Invalid startDate');
     }
     if (this._endDate && this._endDate < this._startDate) {
-      throw new Error('Invalid endDate');
+      throw new EntityValidationException('Invalid endDate');
     }
     // if (
     //   this._managersIds.length &&
     //   this._managersIds.some((id) => !isUUID(id))
     // ) {
-    //   throw new Error('Invalid managersIds');
+    //   throw new EntityValidationException('Invalid managersIds');
     // }
     // if (this._membersIds.length && this._membersIds.some((id) => !isUUID(id))) {
-    //   throw new Error('Invalid membersIds');
+    //   throw new EntityValidationException('Invalid membersIds');
     // }
     if (
       this._moments.length &&
       !this._moments.every((moment) => moment instanceof EventMoment)
     ) {
-      throw new Error('Invalid moments');
+      throw new EntityValidationException('Invalid moments');
     }
   }
 

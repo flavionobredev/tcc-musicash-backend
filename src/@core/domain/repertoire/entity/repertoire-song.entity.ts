@@ -1,4 +1,5 @@
 import { BaseEntity } from 'src/@core/@shared/entity/base.entity';
+import { EntityValidationException } from 'src/@core/@shared/exception/domain.exception';
 import { isUrl } from 'src/@core/@shared/validators/string.validator';
 
 type RepertoireSongConstructor = BaseEntity.Constructor & {
@@ -28,23 +29,23 @@ export class RepertoireSong extends BaseEntity {
 
   private validate() {
     if (!this._title) {
-      throw new Error('Invalid title');
+      throw new EntityValidationException('Invalid title');
     }
 
     if (this._title.length > 255) {
-      throw new Error(`invalid title length: ${this._title.length}`);
+      throw new EntityValidationException(`invalid title length: ${this._title.length}`);
     }
 
     if (!this._lyrics) {
-      throw new Error('Invalid lyrics');
+      throw new EntityValidationException('Invalid lyrics');
     }
 
     if (this._youtubeLink && !isUrl(this._youtubeLink)) {
-      throw new Error('Invalid youtubeLink');
+      throw new EntityValidationException('Invalid youtubeLink');
     }
 
     if (this._label && this._label.length > 128) {
-      throw new Error(`invalid label length: ${this._label.length}`);
+      throw new EntityValidationException(`invalid label length: ${this._label.length}`);
     }
   }
 

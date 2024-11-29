@@ -1,4 +1,5 @@
 import { BaseEntity } from 'src/@core/@shared/entity/base.entity';
+import { EntityValidationException } from 'src/@core/@shared/exception/domain.exception';
 import { isUrl } from 'src/@core/@shared/validators/string.validator';
 import { SongSource } from '../value-object/song-source.vo';
 
@@ -29,23 +30,23 @@ export class Song extends BaseEntity {
 
   private validate() {
     if (!this.title) {
-      throw new Error('Invalid title');
+      throw new EntityValidationException('Invalid title');
     }
 
     if (!this.artists || this.artists.length === 0) {
-      throw new Error('Invalid artists');
+      throw new EntityValidationException('Invalid artists');
     }
 
     if (!this.lyricPreview) {
-      throw new Error('Invalid lyricPreview');
+      throw new EntityValidationException('Invalid lyricPreview');
     }
 
     if (this.thumbnailLink && !isUrl(this.thumbnailLink)) {
-      throw new Error('Invalid thumbnailLink');
+      throw new EntityValidationException('Invalid thumbnailLink');
     }
 
     if (!this.source) {
-      throw new Error('Invalid source');
+      throw new EntityValidationException('Invalid source');
     }
   }
 }

@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import { randomUUID } from 'node:crypto';
 import { RepertoireSong } from 'src/@core/domain/repertoire/entity/repertoire-song.entity';
 import { Repertoire } from 'src/@core/domain/repertoire/entity/repertoire.entity';
-import { makeTestPrismaClient } from 'test/@shared/utils/prisma/db-connection.util';
+import { makeTestPrismaClient, removeTestPrismaClient } from 'test/@shared/utils/prisma/db-connection.util';
 import { PrismaRepertoireRepository } from './prisma.repository';
 
 describe('PrismaRepertoireRepository', () => {
@@ -23,12 +23,16 @@ describe('PrismaRepertoireRepository', () => {
   }
 
   beforeAll(async () => {
-    prisma = await makeTestPrismaClient('testing.db');
+    prisma = await makeTestPrismaClient('testing-repertoire.db');
     repository = new PrismaRepertoireRepository(prisma);
     await prisma.repertoire.deleteMany();
     await prisma.repertoireSongs.deleteMany();
     await prisma.songs.deleteMany();
   });
+
+  afterAll(async () => {
+    await removeTestPrismaClient('testing-repertoire.db');
+  })
 
   it('should create a repertoire without songs', async () => {
     const id = randomUUID();

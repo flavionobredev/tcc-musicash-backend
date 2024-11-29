@@ -1,4 +1,5 @@
 import { BaseEntity } from 'src/@core/@shared/entity/base.entity';
+import { EntityValidationException } from 'src/@core/@shared/exception/domain.exception';
 import { isUUID } from 'src/@core/@shared/validators/string.validator';
 import { EventMomentMember } from '../value-object/event-moment-member.vo';
 
@@ -32,19 +33,19 @@ export class EventMoment extends BaseEntity {
 
   private validate() {
     if (!this._title || this._title.length > 255) {
-      throw new Error('Invalid title');
+      throw new EntityValidationException('Invalid title');
     }
     if (this._startDate && this._endDate && this._endDate < this._startDate) {
-      throw new Error('Invalid endDate');
+      throw new EntityValidationException('Invalid endDate');
     }
     if (this._repertoireId && !isUUID(this._repertoireId)) {
-      throw new Error('Invalid repertoireId');
+      throw new EntityValidationException('Invalid repertoireId');
     }
     if (
       this._members.length &&
       !this._members.every((member) => member instanceof EventMomentMember)
     ) {
-      throw new Error('Invalid members');
+      throw new EntityValidationException('Invalid members');
     }
   }
 
