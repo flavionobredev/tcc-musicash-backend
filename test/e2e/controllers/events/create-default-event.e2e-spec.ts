@@ -49,7 +49,14 @@ describe('EventController (e2e): create default event', () => {
       new HttpDomainExceptionFilter(),
       new HttpEntityValidationExceptionFilter(),
     );
-    app.useGlobalPipes(new ValidationPipe({ errorHttpStatusCode: 422 }));
+    app.useGlobalPipes(
+      new ValidationPipe({
+        whitelist: true,
+        errorHttpStatusCode: 422,
+        transform: true,
+        transformOptions: { enableImplicitConversion: true },
+      }),
+    );
     prisma = moduleFixture.get<DbPrismaClient>(DbPrismaClient);
     await app.init();
   });
@@ -82,7 +89,10 @@ describe('EventController (e2e): create default event', () => {
       })
       .expect(422)
       .expect({
-        message: 'Invalid startDate',
+        message: [
+          'startDate must be a valid date',
+          'startDate must be a Date instance',
+        ],
         error: 'Unprocessable Entity',
         statusCode: 422,
       });
@@ -100,16 +110,15 @@ describe('EventController (e2e): create default event', () => {
       .send({
         title: '',
         startDate: null,
-        endDate: '2021',
+        endDate: '2021-10-10',
         description: true,
       })
       .expect((result) => {
         expect(result.status).toBe(422);
         expect(result.body.message).toEqual([
           'title should not be empty',
-          'startDate should not be empty',
-          'startDate must be a string',
-          'description must be a string',
+          'startDate must be a valid date',
+          'endDate must be a valid date',
         ]);
       });
   });

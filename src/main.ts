@@ -5,7 +5,14 @@ import { HttpApplicationExceptionFilter } from './shared/exceptions/http-applica
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.useGlobalPipes(new ValidationPipe({ errorHttpStatusCode: 422 }));
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      errorHttpStatusCode: 422,
+      transform: true,
+      transformOptions: { enableImplicitConversion: true },
+    }),
+  );
   app.useGlobalFilters(new HttpApplicationExceptionFilter());
   app.setGlobalPrefix('api');
   await app.listen(3000);
