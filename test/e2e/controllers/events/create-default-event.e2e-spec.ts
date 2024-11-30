@@ -1,14 +1,12 @@
-import { INestApplication, ValidationPipe } from '@nestjs/common';
+import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { CreateDefaultEventUsecase } from 'src/@core/application/usecase';
 import { PrismaEventRepository } from 'src/@core/infra/event/repository/prisma.repository';
 import { PrismaRepertoireRepository } from 'src/@core/infra/repertoire/repository/prisma.repository';
 import { PrismaUserRepository } from 'src/@core/infra/user/repository/prisma.repository';
 import { DbPrismaClient } from 'src/infra/database/prisma';
+import { createAppConfig } from 'src/main/factories/configure-app';
 import { EventsController } from 'src/modules/events/controllers';
-import { HttpApplicationExceptionFilter } from 'src/shared/exceptions/http-application-exception.filter';
-import { HttpDomainExceptionFilter } from 'src/shared/exceptions/http-domain-exception.filter';
-import { HttpEntityValidationExceptionFilter } from 'src/shared/exceptions/http-entity-validation-exception.filter';
 import * as request from 'supertest';
 import {
   makeTestPrismaClient,
@@ -43,20 +41,7 @@ describe('EventController (e2e): create default event', () => {
       ],
     }).compile();
 
-    app = moduleFixture.createNestApplication();
-    app.useGlobalFilters(
-      new HttpApplicationExceptionFilter(),
-      new HttpDomainExceptionFilter(),
-      new HttpEntityValidationExceptionFilter(),
-    );
-    app.useGlobalPipes(
-      new ValidationPipe({
-        whitelist: true,
-        errorHttpStatusCode: 422,
-        transform: true,
-        transformOptions: { enableImplicitConversion: true },
-      }),
-    );
+    app = createAppConfig(moduleFixture.createNestApplication());
     prisma = moduleFixture.get<DbPrismaClient>(DbPrismaClient);
     await app.init();
   });
