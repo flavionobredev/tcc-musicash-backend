@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
-import { PrismaEventRepository } from 'src/@core/infra/event/repository/prisma.repository';
-import { PrismaRepertoireRepository } from 'src/@core/infra/repertoire/repository/prisma.repository';
-import { PrismaSongRepository } from 'src/@core/infra/song/repository/prisma.repository';
-import { PrismaUserRepository } from 'src/@core/infra/user/repository/prisma.repository';
+import {
+  PrismaEventRepository,
+  PrismaRepertoireRepository,
+} from 'src/@core/infra/repositories';
+import { PrismaSongRepository } from 'src/@core/infra/repositories/prisma-song.repository';
+import { PrismaUserRepository } from 'src/@core/infra/repositories/prisma-user.repository';
 import { DbPrismaClient, PrismaModule } from './prisma';
 
 const providers = [

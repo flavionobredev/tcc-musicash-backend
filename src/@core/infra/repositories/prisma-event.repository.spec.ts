@@ -3,7 +3,7 @@ import { randomUUID } from 'crypto';
 import { EventMoment } from 'src/@core/domain/event/entity/event-moment.entity';
 import { EventEntity } from 'src/@core/domain/event/entity/event.entity';
 import { makeTestPrismaClient, removeTestPrismaClient } from 'test/@shared/utils/prisma/db-connection.util';
-import { PrismaEventRepository } from './prisma.repository';
+import { PrismaEventRepository } from './prisma-event.repository';
 
 describe('PrismaEventRepository test', () => {
   let prisma: PrismaClient;

@@ -3,7 +3,7 @@ import { randomUUID } from 'node:crypto';
 import { RepertoireSong } from 'src/@core/domain/repertoire/entity/repertoire-song.entity';
 import { Repertoire } from 'src/@core/domain/repertoire/entity/repertoire.entity';
 import { makeTestPrismaClient, removeTestPrismaClient } from 'test/@shared/utils/prisma/db-connection.util';
-import { PrismaRepertoireRepository } from './prisma.repository';
+import { PrismaRepertoireRepository } from './prisma-repertoire.repository';
 
 describe('PrismaRepertoireRepository', () => {
   let prisma: PrismaClient;

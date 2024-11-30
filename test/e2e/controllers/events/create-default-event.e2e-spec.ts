@@ -1,9 +1,11 @@
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { CreateDefaultEventUsecase } from 'src/@core/application/usecase';
-import { PrismaEventRepository } from 'src/@core/infra/event/repository/prisma.repository';
-import { PrismaRepertoireRepository } from 'src/@core/infra/repertoire/repository/prisma.repository';
-import { PrismaUserRepository } from 'src/@core/infra/user/repository/prisma.repository';
+import {
+  PrismaEventRepository,
+  PrismaRepertoireRepository,
+  PrismaUserRepository,
+} from 'src/@core/infra/repositories';
 import { DbPrismaClient } from 'src/infra/database/prisma';
 import { createAppConfig } from 'src/main/factories/configure-app';
 import { EventsController } from 'src/modules/events/controllers';

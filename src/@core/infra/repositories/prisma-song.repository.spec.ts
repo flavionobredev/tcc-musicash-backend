@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import { randomUUID } from 'node:crypto';
 import { Song } from 'src/@core/domain/song/entity/song.entity';
 import { makeTestPrismaClient, removeTestPrismaClient } from 'test/@shared/utils/prisma/db-connection.util';
-import { PrismaSongRepository } from './prisma.repository';
+import { PrismaSongRepository } from './prisma-song.repository';
 
 describe('PrismaSongRepository', () => {
   let prisma: PrismaClient;

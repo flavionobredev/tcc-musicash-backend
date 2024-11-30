@@ -1,7 +1,10 @@
 import { PrismaClient } from '@prisma/client';
 import { randomUUID } from 'node:crypto';
-import { makeTestPrismaClient, removeTestPrismaClient } from 'test/@shared/utils/prisma/db-connection.util';
-import { PrismaUserRepository } from './prisma.repository';
+import {
+  makeTestPrismaClient,
+  removeTestPrismaClient,
+} from 'test/@shared/utils/prisma/db-connection.util';
+import { PrismaUserRepository } from './prisma-user.repository';
 
 describe('PrismaSongRepository', () => {
   let prisma: PrismaClient;
@@ -15,7 +18,7 @@ describe('PrismaSongRepository', () => {
 
   afterAll(async () => {
     await removeTestPrismaClient('testing-user.db');
-  })
+  });
 
   it('should find a user by id', async () => {
     const id = randomUUID();
