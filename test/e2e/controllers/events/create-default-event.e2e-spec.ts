@@ -17,7 +17,7 @@ describe('EventController (e2e): create default event', () => {
   let app: INestApplication;
   let prisma: DbPrismaClient;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       controllers: [EventsController],
       providers: [
