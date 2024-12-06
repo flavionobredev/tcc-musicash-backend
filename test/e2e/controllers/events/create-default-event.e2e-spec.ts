@@ -55,7 +55,7 @@ describe('EventController (e2e): create default event', () => {
 
   it('/events (POST): should throw error if user not found', () => {
     return request(app.getHttpServer())
-      .post('/events')
+      .post('/api/events')
       .send({
         title: 'Event title',
         startDate: new Date().toISOString(),
@@ -69,7 +69,7 @@ describe('EventController (e2e): create default event', () => {
 
   it('/events (POST): should throw error if date is invalid', () => {
     return request(app.getHttpServer())
-      .post('/events')
+      .post('/api/events')
       .send({
         title: 'Event title',
         startDate: new Date().toISOString() + 'hehe',
@@ -89,11 +89,13 @@ describe('EventController (e2e): create default event', () => {
     await prisma.users.create({
       data: {
         id: 'cec2009f-d703-4606-a8b7-240efe21ea37',
+        email: 'teste@teste.com',
+        name: 'Teste',
       },
     });
 
     return request(app.getHttpServer())
-      .post('/events')
+      .post('/api/events')
       .send({
         title: '',
         startDate: null,
@@ -113,7 +115,7 @@ describe('EventController (e2e): create default event', () => {
   it('/events (POST): should create event with default values', async () => {
     const now = new Date().toISOString();
     return request(app.getHttpServer())
-      .post('/events')
+      .post('/api/events')
       .send({
         title: 'Event title',
         startDate: now,

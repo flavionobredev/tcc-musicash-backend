@@ -1,5 +1,8 @@
 model Users {
   id                 String               @id @default(uuid()) @map("id")
+  name               String
+  email              String               @unique
+  picture            String?
   Events             Events[]
   EventMomentMembers EventMomentMembers[]
   createdAt          DateTime             @default(now()) @map("created_at")

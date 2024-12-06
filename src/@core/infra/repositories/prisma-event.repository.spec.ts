@@ -2,7 +2,10 @@ import { PrismaClient } from '@prisma/client';
 import { randomUUID } from 'crypto';
 import { EventMoment } from 'src/@core/domain/event/entity/event-moment.entity';
 import { EventEntity } from 'src/@core/domain/event/entity/event.entity';
-import { makeTestPrismaClient, removeTestPrismaClient } from 'test/@shared/utils/prisma/db-connection.util';
+import {
+  makeTestPrismaClient,
+  removeTestPrismaClient,
+} from 'test/@shared/utils/prisma/db-connection.util';
 import { PrismaEventRepository } from './prisma-event.repository';
 
 describe('PrismaEventRepository test', () => {
@@ -51,7 +54,10 @@ describe('PrismaEventRepository test', () => {
 
   async function createUserTest() {
     return await prisma.users.create({
-      data: {},
+      data: {
+        email: `email${randomUUID()}@test.com`,
+        name: 'name',
+      },
     });
   }
 
@@ -62,7 +68,7 @@ describe('PrismaEventRepository test', () => {
 
   afterAll(async () => {
     await removeTestPrismaClient('testing-event.db');
-  })
+  });
 
   it('should create an event without moments', async () => {
     const id = randomUUID();

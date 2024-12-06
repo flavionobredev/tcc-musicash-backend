@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { randomUUID } from 'node:crypto';
+import { User } from 'src/@core/domain/user';
 import {
   makeTestPrismaClient,
   removeTestPrismaClient,
@@ -21,17 +22,21 @@ describe('PrismaSongRepository', () => {
   });
 
   it('should find a user by id', async () => {
-    const id = randomUUID();
+    const user = {
+      id: randomUUID(),
+      email: 'teste@teste.com',
+      name: 'Teste',
+    };
     await prisma.users.create({
-      data: {
-        id: id,
-      },
+      data: user,
     });
 
-    const result = await repository.findById(id);
+    const result = await repository.findById(user.id);
 
-    expect(result).toEqual({
-      id: id,
+    expect(result.toJSON()).toEqual({
+      id: user.id,
+      email: user.email,
+      name: user.name,
       createdAt: expect.any(Date),
       updatedAt: undefined,
     });
@@ -41,5 +46,44 @@ describe('PrismaSongRepository', () => {
     const result = await repository.findById(randomUUID());
 
     expect(result).toBeNull();
+  });
+
+  it('should upsert a user by email', async () => {
+    const user = new User({
+      email: 'teste@teste.com',
+      name: 'Teste',
+    });
+
+    await repository.upsertByEmail(user);
+
+    const result = await prisma.users.findUnique({
+      where: { email: user.email },
+    });
+
+    expect(result).toEqual({
+      id: expect.any(String),
+      email: user.email,
+      name: user.name,
+      picture: null,
+      createdAt: expect.any(Date),
+      updatedAt: expect.any(Date),
+    });
+
+    user.name = 'Teste 2';
+
+    await repository.upsertByEmail(user);
+
+    const result2 = await prisma.users.findUnique({
+      where: { email: user.email },
+    });
+
+    expect(result2).toEqual({
+      id: expect.any(String),
+      email: user.email,
+      name: user.name,
+      picture: null,
+      createdAt: expect.any(Date),
+      updatedAt: expect.any(Date),
+    });
   });
 });

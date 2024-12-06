@@ -2,7 +2,7 @@ import { randomUUID } from 'crypto';
 import { EventRepository } from 'src/@core/domain/event/repository/event.repository';
 import { RepertoireRepository } from 'src/@core/domain/repertoire/repository/repertoire.repository';
 import { UserRepository } from 'src/@core/domain/user/repository/user.repository';
-import { UserNotFoundException } from '../../exception/user.exception';
+import { UserNotFoundException } from '../../exception';
 import { CreateDefaultEventUsecase } from './create-default-event.usecase';
 
 describe('CreateDefaultEventUsecase', () => {
@@ -25,6 +25,7 @@ describe('CreateDefaultEventUsecase', () => {
     const userRepositorySpy: UserRepository = {
       create: jest.fn(),
       findById: jest.fn().mockResolvedValue({ id: userId }),
+      upsertByEmail: jest.fn(),
     };
     const now = new Date();
     const event = await new CreateDefaultEventUsecase(
@@ -52,6 +53,7 @@ describe('CreateDefaultEventUsecase', () => {
     const userRepositorySpy: UserRepository = {
       create: jest.fn(),
       findById: jest.fn().mockResolvedValue(null),
+      upsertByEmail: jest.fn(),
     };
 
     await expect(

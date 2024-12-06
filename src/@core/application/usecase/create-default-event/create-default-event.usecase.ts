@@ -4,7 +4,7 @@ import { EventRepository } from 'src/@core/domain/event/repository/event.reposit
 import { Repertoire } from 'src/@core/domain/repertoire/entity/repertoire.entity';
 import { RepertoireRepository } from 'src/@core/domain/repertoire/repository/repertoire.repository';
 import { UserRepository } from 'src/@core/domain/user/repository/user.repository';
-import { UserNotFoundException } from '../../exception/user.exception';
+import { UserNotFoundException } from '../../exception';
 
 export type CreateDefaultEventInputDTO = {
   title: string;

@@ -6,7 +6,7 @@ import {
 import { CreateDefaultEventUsecase } from 'src/@core/application/usecase';
 import { CreateDefaultEventInputDTO } from '../dtos/create-default-event.dto';
 
-@Controller('events')
+@Controller('api/events')
 export class EventsController {
   constructor(
     private readonly createDefaultEventUsecase: CreateDefaultEventUsecase,

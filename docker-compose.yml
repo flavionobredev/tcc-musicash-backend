@@ -1,0 +1,10 @@
+services:
+  tccmusicsh-api:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3010:3010"
+    entrypoint: sh -c "npm run prisma:dbpush && npm run start:dev"
+    volumes:
+      - ./:/usr/musicash-api/app

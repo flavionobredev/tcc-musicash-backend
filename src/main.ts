@@ -4,7 +4,6 @@ import { createAppConfig } from './main/factories/configure-app';
 
 async function bootstrap() {
   const app = createAppConfig(await NestFactory.create(AppModule));
-  app.setGlobalPrefix('api');
-  await app.listen(3000);
+  await app.listen(process.env.APP_PORT || 3010);
 }
 bootstrap();
