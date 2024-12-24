@@ -1,8 +1,17 @@
-import { CanActivate, ExecutionContext, Injectable, SetMetadata } from '@nestjs/common';
+import {
+  CanActivate,
+  ExecutionContext,
+  Injectable,
+  SetMetadata,
+} from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
-import { InvalidAppTokenException } from 'src/@core/application/exception';
+import {
+  InvalidAppTokenException,
+  InvalidUserForTokenException,
+} from 'src/@core/application/exception';
 import { TokenService } from 'src/@core/application/service';
+import { UserRepository } from 'src/@core/domain/user';
 
 export const IS_PUBLIC_KEY = 'isPublic';
 export const Public = () => SetMetadata(IS_PUBLIC_KEY, true);
@@ -12,6 +21,7 @@ export class AuthGuard implements CanActivate {
   constructor(
     private readonly tokenService: TokenService,
     private readonly reflector: Reflector,
+    private readonly userRepository: UserRepository,
   ) {}
 
   async canActivate(context: ExecutionContext) {
@@ -29,9 +39,16 @@ export class AuthGuard implements CanActivate {
       throw new InvalidAppTokenException();
     }
 
-    await this.tokenService.verifyAsync(token).catch((err) => {
+    const payload = await this.tokenService.verifyAsync(token).catch((err) => {
       throw new InvalidAppTokenException(err);
     });
+
+    const user = await this.userRepository.findById(payload.sub);
+    if (!user) {
+      throw new InvalidUserForTokenException();
+    }
+
+    request.user = user;
 
     return true;
   }

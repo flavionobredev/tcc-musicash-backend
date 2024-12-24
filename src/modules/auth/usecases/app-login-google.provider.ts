@@ -4,15 +4,15 @@ import {
   AppLoginGoogleUsecase,
   GoogleOauth2API,
 } from 'src/@core/application/usecase/auth/app-login-google';
+import { UserRepository } from 'src/@core/domain/user';
 import { GoogleOAuth2 } from 'src/@core/infra/api/google';
-import { PrismaUserRepository } from 'src/@core/infra/repositories';
 import { DatabaseModule } from 'src/infra/database/database.module';
 
 const usecase: Provider = {
   provide: AppLoginGoogleUsecase,
   useFactory: (repo, tokenService, gAuth) =>
     new AppLoginGoogleUsecase(repo, tokenService, gAuth),
-  inject: [PrismaUserRepository, TokenService, GoogleOauth2API],
+  inject: [UserRepository, TokenService, GoogleOauth2API],
 };
 
 const googleOauth: Provider = {

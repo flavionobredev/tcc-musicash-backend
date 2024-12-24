@@ -1,4 +1,5 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
+import { UserRepository } from 'src/@core/domain/user';
 import {
   PrismaEventRepository,
   PrismaRepertoireRepository,
@@ -30,7 +31,7 @@ const providers = [
     inject: [DbPrismaClient],
   },
   {
-    provide: PrismaUserRepository,
+    provide: UserRepository,
     useFactory: (prisma: DbPrismaClient) => {
       return new PrismaUserRepository(prisma);
     },
@@ -38,9 +39,15 @@ const providers = [
   },
 ];
 
+@Global()
 @Module({
   imports: [PrismaModule],
   providers: providers,
-  exports: providers,
+  exports: [
+    PrismaEventRepository,
+    PrismaRepertoireRepository,
+    PrismaSongRepository,
+    UserRepository,
+  ],
 })
 export class DatabaseModule {}

@@ -27,3 +27,10 @@ export class InvalidAppTokenException extends ApplicationException {
     this.name = InvalidAppTokenException.name;
   }
 }
+
+export class InvalidUserForTokenException extends ApplicationException {
+  constructor() {
+    super('Invalid user for token', 401);
+    this.name = InvalidUserForTokenException.name;
+  }
+}

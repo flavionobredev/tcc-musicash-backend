@@ -12,12 +12,25 @@ import { createAppConfig } from 'src/main/factories/configure-app';
 import { AuthModule } from 'src/modules/auth/auth.module';
 import { EventsController } from 'src/modules/events/controllers';
 import * as request from 'supertest';
-import { makeTestPrismaClient, removeTestPrismaClient } from 'test/@shared/utils/prisma/db-connection.util';
+import {
+  makeTestPrismaClient,
+  removeTestPrismaClient,
+} from 'test/@shared/utils/prisma/db-connection.util';
 
 describe('EventController (e2e): create default event', () => {
   let app: INestApplication;
   let prisma: DbPrismaClient;
+  let tokenService: TokenService;
   let token: string;
+
+  const makeUser = async (email: string) => {
+    return await prisma.users.create({
+      data: {
+        name: 'Teste',
+        email,
+      },
+    });
+  };
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -46,19 +59,12 @@ describe('EventController (e2e): create default event', () => {
 
     app = createAppConfig(moduleFixture.createNestApplication());
     prisma = moduleFixture.get<DbPrismaClient>(DbPrismaClient);
-    const user = await prisma.users.create({
-      data: {
-        name: 'Teste',
-        email: 'testeteste@teste.com',
-      },
-    });
-    token = await moduleFixture.get<TokenService>(TokenService).signAsync(
+    const user = await makeUser('testeteste@teste.com');
+    tokenService = moduleFixture.get<TokenService>(TokenService);
+    token = await tokenService.signAsync(
       {},
       {
         subject: user.id,
-        audience: 'musicash.app',
-        issuer: 'musicash.app',
-        expiresIn: '4h',
       },
     );
     await app.init();
@@ -83,18 +89,24 @@ describe('EventController (e2e): create default event', () => {
       });
   });
 
-  it('/events (POST): should throw error if user not found', () => {
+  it('/events (POST): should throw error if user not found', async () => {
+    const invalid = await tokenService.signAsync(
+      {},
+      {
+        subject: 'cec2009f-d703-4606-a8b7-240efe21ea37',
+      },
+    );
     return request(app.getHttpServer())
       .post('/api/events')
-      .set('Authorization', `Bearer ${token}`)
+      .set('Authorization', `Bearer ${invalid}`)
       .send({
         title: 'Event title',
         startDate: new Date().toISOString(),
       })
-      .expect(404)
+      .expect(401)
       .expect({
-        message: 'User not found',
-        error: 'UserNotFoundException',
+        message: 'Invalid user for token',
+        error: 'InvalidUserForTokenException',
       });
   });
 
@@ -118,14 +130,6 @@ describe('EventController (e2e): create default event', () => {
   });
 
   it('/events (POST): should throw error if invalid body is sended', async () => {
-    await prisma.users.create({
-      data: {
-        id: 'cec2009f-d703-4606-a8b7-240efe21ea37',
-        email: 'teste@teste.com',
-        name: 'Teste',
-      },
-    });
-
     return request(app.getHttpServer())
       .post('/api/events')
       .set('Authorization', `Bearer ${token}`)
@@ -147,6 +151,13 @@ describe('EventController (e2e): create default event', () => {
 
   it('/events (POST): should create event with default values', async () => {
     const now = new Date().toISOString();
+    const user = await makeUser('testdefaultvalues@teste.com');
+    const token = await tokenService.signAsync(
+      {},
+      {
+        subject: user.id,
+      },
+    );
     return request(app.getHttpServer())
       .post('/api/events')
       .set('Authorization', `Bearer ${token}`)
@@ -157,7 +168,7 @@ describe('EventController (e2e): create default event', () => {
       .expect(201)
       .expect({
         title: 'Event title',
-        ownerId: 'cec2009f-d703-4606-a8b7-240efe21ea37',
+        ownerId: user.id,
         startDate: now,
       });
   });

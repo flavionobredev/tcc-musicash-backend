@@ -1,15 +1,13 @@
 import { Module } from '@nestjs/common';
 import { CreateDefaultEventUsecase } from 'src/@core/application/usecase';
+import { UserRepository } from 'src/@core/domain/user';
 import {
   PrismaEventRepository,
   PrismaRepertoireRepository,
 } from 'src/@core/infra/repositories';
-import { PrismaUserRepository } from 'src/@core/infra/repositories/prisma-user.repository';
-import { DatabaseModule } from 'src/infra/database/database.module';
 import { EventsController } from './controllers';
 
 @Module({
-  imports: [DatabaseModule],
   controllers: [EventsController],
   providers: [
     {
@@ -20,7 +18,7 @@ import { EventsController } from './controllers';
       inject: [
         PrismaRepertoireRepository,
         PrismaEventRepository,
-        PrismaUserRepository,
+        UserRepository,
       ],
     },
   ],
