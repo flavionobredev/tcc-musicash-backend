@@ -10,5 +10,6 @@
     "^src/(.*)$": "<rootDir>/../src/$1",
     "^test/(.*)$": "<rootDir>/$1"
   },
-  "detectOpenHandles": true
+  "detectOpenHandles": true,
+  "setupFiles": ["./jest.setup.js"]
 }

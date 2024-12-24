@@ -7,8 +7,6 @@ export class HttpEntityValidationExceptionFilter implements ExceptionFilter {
   catch(exception: EntityValidationException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
-
-    console.log('EntityValidationException', exception);
     response.status(422).json({
       message: exception.message,
       error: exception.name,

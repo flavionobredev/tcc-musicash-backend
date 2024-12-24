@@ -1,5 +1,6 @@
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
+import { TokenService } from 'src/@core/application/service';
 import { CreateDefaultEventUsecase } from 'src/@core/application/usecase';
 import {
   PrismaEventRepository,
@@ -8,25 +9,25 @@ import {
 } from 'src/@core/infra/repositories';
 import { DbPrismaClient } from 'src/infra/database/prisma';
 import { createAppConfig } from 'src/main/factories/configure-app';
+import { AuthModule } from 'src/modules/auth/auth.module';
 import { EventsController } from 'src/modules/events/controllers';
 import * as request from 'supertest';
-import {
-  makeTestPrismaClient,
-  removeTestPrismaClient,
-} from 'test/@shared/utils/prisma/db-connection.util';
+import { makeTestPrismaClient, removeTestPrismaClient } from 'test/@shared/utils/prisma/db-connection.util';
 
 describe('EventController (e2e): create default event', () => {
   let app: INestApplication;
   let prisma: DbPrismaClient;
+  let token: string;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
+      imports: [AuthModule],
       controllers: [EventsController],
       providers: [
         {
           provide: DbPrismaClient,
           useFactory: () => {
-            return makeTestPrismaClient('testinge2e.db');
+            return makeTestPrismaClient();
           },
         },
         {
@@ -45,17 +46,47 @@ describe('EventController (e2e): create default event', () => {
 
     app = createAppConfig(moduleFixture.createNestApplication());
     prisma = moduleFixture.get<DbPrismaClient>(DbPrismaClient);
+    const user = await prisma.users.create({
+      data: {
+        name: 'Teste',
+        email: 'testeteste@teste.com',
+      },
+    });
+    token = await moduleFixture.get<TokenService>(TokenService).signAsync(
+      {},
+      {
+        subject: user.id,
+        audience: 'musicash.app',
+        issuer: 'musicash.app',
+        expiresIn: '4h',
+      },
+    );
     await app.init();
   });
 
   afterAll(async () => {
-    await removeTestPrismaClient('testinge2e.db');
+    await removeTestPrismaClient();
     await app.close();
+  });
+
+  it('/events (POST): should throw error if user not authenticated', () => {
+    return request(app.getHttpServer())
+      .post('/api/events')
+      .send({
+        title: 'Event title',
+        startDate: new Date().toISOString(),
+      })
+      .expect(401)
+      .expect({
+        message: 'Invalid Token',
+        error: 'InvalidAppTokenException',
+      });
   });
 
   it('/events (POST): should throw error if user not found', () => {
     return request(app.getHttpServer())
       .post('/api/events')
+      .set('Authorization', `Bearer ${token}`)
       .send({
         title: 'Event title',
         startDate: new Date().toISOString(),
@@ -70,6 +101,7 @@ describe('EventController (e2e): create default event', () => {
   it('/events (POST): should throw error if date is invalid', () => {
     return request(app.getHttpServer())
       .post('/api/events')
+      .set('Authorization', `Bearer ${token}`)
       .send({
         title: 'Event title',
         startDate: new Date().toISOString() + 'hehe',
@@ -96,6 +128,7 @@ describe('EventController (e2e): create default event', () => {
 
     return request(app.getHttpServer())
       .post('/api/events')
+      .set('Authorization', `Bearer ${token}`)
       .send({
         title: '',
         startDate: null,
@@ -116,6 +149,7 @@ describe('EventController (e2e): create default event', () => {
     const now = new Date().toISOString();
     return request(app.getHttpServer())
       .post('/api/events')
+      .set('Authorization', `Bearer ${token}`)
       .send({
         title: 'Event title',
         startDate: now,

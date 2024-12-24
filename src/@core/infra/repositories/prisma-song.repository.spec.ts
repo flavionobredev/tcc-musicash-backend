@@ -10,12 +10,12 @@ describe('PrismaSongRepository', () => {
   let repository: PrismaSongRepository;
 
   beforeAll(async () => {
-    prisma = await makeTestPrismaClient('testing-song.db');
+    prisma = await makeTestPrismaClient();
     repository = new PrismaSongRepository(prisma);
   });
 
   afterAll(async () => {
-    await removeTestPrismaClient('testing-song.db');
+    await removeTestPrismaClient();
   })
 
   it('should create a song', async () => {

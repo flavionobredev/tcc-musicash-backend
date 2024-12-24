@@ -20,3 +20,10 @@ export class InvalidGoogleTokenException extends ApplicationException {
     this.name = InvalidGoogleTokenException.name;
   }
 }
+
+export class InvalidAppTokenException extends ApplicationException {
+  constructor(err?: Error) {
+    super(err ? `Invalid Token: ${err.message}` : 'Invalid Token', 401);
+    this.name = InvalidAppTokenException.name;
+  }
+}

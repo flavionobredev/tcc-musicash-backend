@@ -13,12 +13,12 @@ describe('PrismaSongRepository', () => {
   let repository: PrismaUserRepository;
 
   beforeAll(async () => {
-    prisma = await makeTestPrismaClient('testing-user.db');
+    prisma = await makeTestPrismaClient();
     repository = new PrismaUserRepository(prisma);
   });
 
   afterAll(async () => {
-    await removeTestPrismaClient('testing-user.db');
+    await removeTestPrismaClient();
   });
 
   it('should find a user by id', async () => {

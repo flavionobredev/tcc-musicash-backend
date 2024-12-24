@@ -1,22 +1,18 @@
 import { Module, Provider } from '@nestjs/common';
+import { TokenService } from 'src/@core/application/service';
 import {
   AppLoginGoogleUsecase,
   GoogleOauth2API,
 } from 'src/@core/application/usecase/auth/app-login-google';
 import { GoogleOAuth2 } from 'src/@core/infra/api/google';
 import { PrismaUserRepository } from 'src/@core/infra/repositories';
-import { JWTTokenService } from 'src/@core/infra/services/token.service';
 import { DatabaseModule } from 'src/infra/database/database.module';
 
 const usecase: Provider = {
   provide: AppLoginGoogleUsecase,
-  useFactory: (repo, gAuth) =>
-    new AppLoginGoogleUsecase(
-      repo,
-      new JWTTokenService({ secret: process.env.APP_JWT_SECRET }),
-      gAuth,
-    ),
-  inject: [PrismaUserRepository, GoogleOauth2API],
+  useFactory: (repo, tokenService, gAuth) =>
+    new AppLoginGoogleUsecase(repo, tokenService, gAuth),
+  inject: [PrismaUserRepository, TokenService, GoogleOauth2API],
 };
 
 const googleOauth: Provider = {

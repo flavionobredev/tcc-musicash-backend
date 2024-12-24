@@ -2,11 +2,9 @@ import { PrismaClient } from '@prisma/client';
 import { spawn } from 'node:child_process';
 import { chmod, rm } from 'node:fs/promises';
 import { join } from 'node:path';
+import { E2E_TESTING_DB, makeDbFilePath } from 'test/jest.setup';
 
 let client: PrismaClient;
-
-const makeDbFilePath = (filename: string) =>
-  join(process.cwd(), 'prisma', filename);
 
 function pushSchemaToPrismaDB(dbPath: string) {
   return new Promise((resolve, reject) => {
@@ -36,20 +34,19 @@ async function deleteOldDB(filePath: string) {
   });
 }
 
-export async function makeTestPrismaClient(filename: string) {
-  if (client) return client;
-  await deleteOldDB(makeDbFilePath(filename));
-  await pushSchemaToPrismaDB(`file:${makeDbFilePath(filename)}`);
-  await chmod(makeDbFilePath(filename), '666');
+export async function makeTestPrismaClient() {
+  await removeTestPrismaClient();
+  await pushSchemaToPrismaDB(`file:${makeDbFilePath(E2E_TESTING_DB)}`);
+  await chmod(makeDbFilePath(E2E_TESTING_DB), '666');
   const prisma = new PrismaClient({
-    datasourceUrl: `file:${makeDbFilePath(filename)}`,
+    datasourceUrl: `file:${makeDbFilePath(E2E_TESTING_DB)}`,
   });
 
   client = prisma;
   return prisma;
 }
 
-export async function removeTestPrismaClient(filename: string) {
-  if(client) await client.$disconnect();
-  await deleteOldDB(makeDbFilePath(filename));
+export async function removeTestPrismaClient() {
+  if (client) await client.$disconnect();
+  await deleteOldDB(makeDbFilePath(E2E_TESTING_DB));
 }

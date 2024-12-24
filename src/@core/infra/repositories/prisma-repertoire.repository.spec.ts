@@ -23,7 +23,7 @@ describe('PrismaRepertoireRepository', () => {
   }
 
   beforeAll(async () => {
-    prisma = await makeTestPrismaClient('testing-repertoire.db');
+    prisma = await makeTestPrismaClient();
     repository = new PrismaRepertoireRepository(prisma);
     await prisma.repertoire.deleteMany();
     await prisma.repertoireSongs.deleteMany();
@@ -31,7 +31,7 @@ describe('PrismaRepertoireRepository', () => {
   });
 
   afterAll(async () => {
-    await removeTestPrismaClient('testing-repertoire.db');
+    await removeTestPrismaClient();
   })
 
   it('should create a repertoire without songs', async () => {

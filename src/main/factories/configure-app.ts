@@ -3,7 +3,7 @@ import {
   HttpApplicationExceptionFilter,
   HttpDomainExceptionFilter,
   HttpEntityValidationExceptionFilter,
-} from 'src/shared/exceptions';
+} from 'src/main/exceptions';
 
 export function createAppConfig(app: INestApplication) {
   app.useGlobalFilters(

@@ -62,12 +62,12 @@ describe('PrismaEventRepository test', () => {
   }
 
   beforeAll(async () => {
-    prisma = await makeTestPrismaClient('testing-event.db');
+    prisma = await makeTestPrismaClient();
     repository = new PrismaEventRepository(prisma);
   });
 
   afterAll(async () => {
-    await removeTestPrismaClient('testing-event.db');
+    await removeTestPrismaClient();
   });
 
   it('should create an event without moments', async () => {
