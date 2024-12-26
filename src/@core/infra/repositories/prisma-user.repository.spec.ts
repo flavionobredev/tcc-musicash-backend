@@ -42,6 +42,27 @@ describe('PrismaSongRepository', () => {
     });
   });
 
+  it('should find a user by email', async () => {
+    const user = {
+      id: randomUUID(),
+      email: 'testeemail@teste.com',
+      name: 'Teste',
+    };
+    await prisma.users.create({
+      data: user,
+    });
+
+    const result = await repository.findByEmail(user.email);
+
+    expect(result.toJSON()).toEqual({
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      createdAt: expect.any(Date),
+      updatedAt: undefined,
+    });
+  });
+
   it('should return null when user is not found', async () => {
     const result = await repository.findById(randomUUID());
 

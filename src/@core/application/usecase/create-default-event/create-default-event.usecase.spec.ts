@@ -26,6 +26,7 @@ describe('CreateDefaultEventUsecase', () => {
       create: jest.fn(),
       findById: jest.fn().mockResolvedValue({ id: userId }),
       upsertByEmail: jest.fn(),
+      findByEmail: jest.fn(),
     };
     const now = new Date();
     const event = await new CreateDefaultEventUsecase(
@@ -53,6 +54,7 @@ describe('CreateDefaultEventUsecase', () => {
     const userRepositorySpy: UserRepository = {
       create: jest.fn(),
       findById: jest.fn().mockResolvedValue(null),
+      findByEmail: jest.fn(),
       upsertByEmail: jest.fn(),
     };
 

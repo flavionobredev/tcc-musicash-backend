@@ -1,8 +1,5 @@
 import { ExecutionContext } from '@nestjs/common';
-import {
-  InvalidAppTokenException,
-  InvalidUserForTokenException,
-} from 'src/@core/application/exception';
+import { InvalidAppTokenException, InvalidUserForTokenException } from 'src/@core/application/exception';
 import { AuthGuard } from './auth.guard';
 
 describe('AuthGuard unit tests', () => {
@@ -28,23 +25,31 @@ describe('AuthGuard unit tests', () => {
       verifyAsync: jest.fn().mockResolvedValue(payload),
     }) as any;
 
+  const makeFirebaseApp = (email: string) => ({
+    auth: jest.fn().mockReturnValue({
+      verifyIdToken: jest.fn().mockResolvedValue({ email }),
+    }),
+  }) as any;
+
   it('should return true if isPublic is true', async () => {
-    const guard = new AuthGuard({} as any, makeReflector(true), {} as any);
+    const guard = new AuthGuard(makeReflector(true), {} as any, {} as any, );
     expect(await guard.canActivate(makeContext())).toBe(true);
   });
 
   it('should throw error if token is not provided', async () => {
-    const guard = new AuthGuard({} as any, makeReflector(), {} as any);
+    const guard = new AuthGuard(makeReflector(), {} as any, {} as any, );
     await expect(guard.canActivate(makeContext(null))).rejects.toThrow(
       InvalidAppTokenException,
     );
   });
 
   it('should throw error if token is invalid', async () => {
-    const tokenService = {
-      verifyAsync: jest.fn().mockRejectedValue(new Error()),
+    const firebase = {
+      auth: jest.fn().mockReturnValue({
+        verifyIdToken: jest.fn().mockRejectedValue(new Error()),
+      })
     } as any;
-    const guard = new AuthGuard(tokenService, makeReflector(), {} as any);
+    const guard = new AuthGuard(makeReflector(), {} as any, firebase);
     await expect(guard.canActivate(makeContext())).rejects.toThrow(
       InvalidAppTokenException,
     );
@@ -52,12 +57,12 @@ describe('AuthGuard unit tests', () => {
 
   it('should throw error if user is not found', async () => {
     const userRepository = {
-      findById: jest.fn().mockResolvedValue(null),
+      findByEmail: jest.fn().mockResolvedValue(null),
     } as any;
     const guard = new AuthGuard(
-      makeTokenService(),
       makeReflector(),
       userRepository,
+      makeFirebaseApp('email@email.com'),
     );
     await expect(guard.canActivate(makeContext())).rejects.toThrow(
       InvalidUserForTokenException,
@@ -65,14 +70,14 @@ describe('AuthGuard unit tests', () => {
   });
 
   it('should set user in request', async () => {
-    const user = { id: '1' };
+    const user = { id: '1', email: 'teste@teste.com' };
     const userRepository = {
-      findById: jest.fn().mockResolvedValue(user),
+      findByEmail: jest.fn().mockResolvedValue(user),
     } as any;
     const guard = new AuthGuard(
-      makeTokenService(),
       makeReflector(),
       userRepository,
+      makeFirebaseApp(user.email)
     );
     const context = makeContext();
     const spy = jest.spyOn(context.switchToHttp(), 'getRequest');

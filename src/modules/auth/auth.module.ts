@@ -1,20 +1,23 @@
 import { Global, Module } from '@nestjs/common';
-import { TokenService } from 'src/@core/application/service';
-import { JWTTokenService } from 'src/@core/infra/services/token.service';
-import { GoogleAuthController } from './controllers';
-import { AppLoginGoogleUsecaseModule } from './usecases/app-login-google.provider';
+import { FirebaseApp, makeFirebaseApp } from 'src/main/config/firebase';
 
 @Global()
 @Module({
-  imports: [AppLoginGoogleUsecaseModule],
-  controllers: [GoogleAuthController],
+  // imports: [AppLoginGoogleUsecaseModule],
+  // controllers: [GoogleAuthController],
   providers: [
+    // {
+    //   provide: TokenService,
+    //   useFactory: () =>
+    //     new JWTTokenService({ secret: process.env.APP_JWT_SECRET }),
+    // },
     {
-      provide: TokenService,
-      useFactory: () =>
-        new JWTTokenService({ secret: process.env.APP_JWT_SECRET }),
+      provide: FirebaseApp,
+      useFactory: () => {
+        return makeFirebaseApp();
+      },
     },
   ],
-  exports: [TokenService],
+  exports: [/*TokenService*/ FirebaseApp],
 })
 export class AuthModule {}

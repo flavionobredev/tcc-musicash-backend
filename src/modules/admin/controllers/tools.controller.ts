@@ -23,7 +23,7 @@ export class ToolsController {
           import { getAuth, GoogleAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js';
 
           const firebaseConfig = ` +
-      process.env.FIREBASE_WEB_CONFIG +
+      process.env.GOOGLE_FIREBASE_WEB_CONFIG +
       `;
 
           const app = initializeApp(firebaseConfig);
