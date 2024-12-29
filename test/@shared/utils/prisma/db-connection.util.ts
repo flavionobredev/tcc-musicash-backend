@@ -15,15 +15,19 @@ function pushSchemaToPrismaDB(dbPath: string) {
         shell: true,
       },
     );
+    const stderror = [];
+
+    result.stderr.on('data', (data) => {
+      stderror.push(data);
+    });
 
     result.on('error', (err) => {
-      console.log('error', err);
       reject(err);
     });
+
     result.on('exit', (code) => {
-      if (code === 0) {
-        resolve(void 0);
-      }
+      if (code !== 0) return reject(`errors: ${stderror.join('')}`);
+      return resolve(void 0);
     });
   });
 }
