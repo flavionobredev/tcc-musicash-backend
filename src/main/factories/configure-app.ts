@@ -19,5 +19,8 @@ export function createAppConfig(app: INestApplication) {
       transformOptions: { enableImplicitConversion: true },
     }),
   );
+  app.enableCors({
+    origin: ['http://localhost:3010', 'http://localhost:3001'],
+  });
   return app;
 }

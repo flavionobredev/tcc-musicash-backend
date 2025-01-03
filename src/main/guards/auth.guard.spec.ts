@@ -1,5 +1,8 @@
 import { ExecutionContext } from '@nestjs/common';
-import { InvalidAppTokenException, InvalidUserForTokenException } from 'src/@core/application/exception';
+import {
+  InvalidAppTokenException,
+  InvalidUserForTokenException,
+} from 'src/@core/application/exception';
 import { AuthGuard } from './auth.guard';
 
 describe('AuthGuard unit tests', () => {
@@ -20,24 +23,18 @@ describe('AuthGuard unit tests', () => {
       getAllAndOverride: jest.fn().mockReturnValue(isPublic),
     }) as any;
 
-  const makeTokenService = (payload = { sub: '1' }) =>
+  const makeFirebaseAuth = (email: string) =>
     ({
-      verifyAsync: jest.fn().mockResolvedValue(payload),
+      verifyIdToken: jest.fn().mockResolvedValue({ email }),
     }) as any;
 
-  const makeFirebaseApp = (email: string) => ({
-    auth: jest.fn().mockReturnValue({
-      verifyIdToken: jest.fn().mockResolvedValue({ email }),
-    }),
-  }) as any;
-
   it('should return true if isPublic is true', async () => {
-    const guard = new AuthGuard(makeReflector(true), {} as any, {} as any, );
+    const guard = new AuthGuard(makeReflector(true), {} as any, {} as any);
     expect(await guard.canActivate(makeContext())).toBe(true);
   });
 
   it('should throw error if token is not provided', async () => {
-    const guard = new AuthGuard(makeReflector(), {} as any, {} as any, );
+    const guard = new AuthGuard(makeReflector(), {} as any, {} as any);
     await expect(guard.canActivate(makeContext(null))).rejects.toThrow(
       InvalidAppTokenException,
     );
@@ -45,9 +42,7 @@ describe('AuthGuard unit tests', () => {
 
   it('should throw error if token is invalid', async () => {
     const firebase = {
-      auth: jest.fn().mockReturnValue({
-        verifyIdToken: jest.fn().mockRejectedValue(new Error()),
-      })
+      verifyIdToken: jest.fn().mockRejectedValue(new Error()),
     } as any;
     const guard = new AuthGuard(makeReflector(), {} as any, firebase);
     await expect(guard.canActivate(makeContext())).rejects.toThrow(
@@ -62,7 +57,7 @@ describe('AuthGuard unit tests', () => {
     const guard = new AuthGuard(
       makeReflector(),
       userRepository,
-      makeFirebaseApp('email@email.com'),
+      makeFirebaseAuth('email@email.com'),
     );
     await expect(guard.canActivate(makeContext())).rejects.toThrow(
       InvalidUserForTokenException,
@@ -77,7 +72,7 @@ describe('AuthGuard unit tests', () => {
     const guard = new AuthGuard(
       makeReflector(),
       userRepository,
-      makeFirebaseApp(user.email)
+      makeFirebaseAuth(user.email),
     );
     const context = makeContext();
     const spy = jest.spyOn(context.switchToHttp(), 'getRequest');

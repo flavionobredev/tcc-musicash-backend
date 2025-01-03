@@ -1,7 +1,6 @@
 import {
   CanActivate,
   ExecutionContext,
-  Inject,
   Injectable,
   SetMetadata,
 } from '@nestjs/common';
@@ -11,8 +10,8 @@ import {
   InvalidAppTokenException,
   InvalidUserForTokenException,
 } from 'src/@core/application/exception';
+import { FirebaseAuth } from 'src/@core/application/protocols/firebase-auth.protocol';
 import { UserRepository } from 'src/@core/domain/user';
-import { FirebaseApp } from '../config/firebase';
 
 export const IS_PUBLIC_KEY = 'isPublic';
 export const Public = () => SetMetadata(IS_PUBLIC_KEY, true);
@@ -22,8 +21,7 @@ export class AuthGuard implements CanActivate {
   constructor(
     private readonly reflector: Reflector,
     private readonly userRepository: UserRepository,
-    @Inject(FirebaseApp)
-    private readonly firebaseApp: FirebaseApp,
+    private readonly firebaseAuth: FirebaseAuth,
   ) {}
 
   async canActivate(context: ExecutionContext) {
@@ -41,8 +39,7 @@ export class AuthGuard implements CanActivate {
       throw new InvalidAppTokenException();
     }
 
-    const firebaseUser = await this.firebaseApp
-      .auth()
+    const firebaseUser = await this.firebaseAuth
       .verifyIdToken(token)
       .catch((err) => {
         throw new InvalidAppTokenException(err);
