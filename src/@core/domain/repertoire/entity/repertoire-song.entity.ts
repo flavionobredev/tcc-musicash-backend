@@ -33,7 +33,9 @@ export class RepertoireSong extends BaseEntity {
     }
 
     if (this._title.length > 255) {
-      throw new EntityValidationException(`invalid title length: ${this._title.length}`);
+      throw new EntityValidationException(
+        `invalid title length: ${this._title.length}`,
+      );
     }
 
     if (!this._lyrics) {
@@ -45,7 +47,9 @@ export class RepertoireSong extends BaseEntity {
     }
 
     if (this._label && this._label.length > 128) {
-      throw new EntityValidationException(`invalid label length: ${this._label.length}`);
+      throw new EntityValidationException(
+        `invalid label length: ${this._label.length}`,
+      );
     }
   }
 

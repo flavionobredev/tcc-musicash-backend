@@ -100,6 +100,6 @@ export class PrismaEventRepository implements EventRepository {
       );
     });
 
-    return event
+    return event;
   }
 }
