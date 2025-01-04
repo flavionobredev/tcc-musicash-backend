@@ -16,6 +16,7 @@ export class PrismaUserRepository implements UserRepository {
       id: result.id,
       email: result.email,
       name: result.name,
+      picture: result.picture,
     });
   }
 
@@ -26,6 +27,7 @@ export class PrismaUserRepository implements UserRepository {
       id: result.id,
       email: result.email,
       name: result.name,
+      picture: result.picture,
     });
   }
 
