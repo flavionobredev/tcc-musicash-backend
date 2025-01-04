@@ -20,7 +20,7 @@ export function createAppConfig(app: INestApplication) {
     }),
   );
   app.enableCors({
-    origin: ['http://localhost:3010', 'http://localhost:3001'],
+    origin: ['http://localhost:3010', /http:\/\/localhost:300\d/],
   });
   return app;
 }
