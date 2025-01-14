@@ -1,11 +1,11 @@
 import { PrismaClient } from '@prisma/client';
-import { randomUUID } from 'crypto';
 import { EventMoment } from 'src/@core/domain/event/entity/event-moment.entity';
 import { EventEntity } from 'src/@core/domain/event/entity/event.entity';
 import {
   makeTestPrismaClient,
   removeTestPrismaClient,
 } from 'test/@shared/utils/prisma/db-connection.util';
+import { v7 } from 'uuid';
 import { PrismaEventRepository } from './prisma-event.repository';
 
 describe('PrismaEventRepository test', () => {
@@ -20,7 +20,7 @@ describe('PrismaEventRepository test', () => {
         artists: 'artist',
         lyricPreview: 'lyric',
         externalProvider: 'provider',
-        externalProviderSongId: randomUUID(),
+        externalProviderSongId: v7(),
       },
     });
   }
@@ -29,13 +29,13 @@ describe('PrismaEventRepository test', () => {
     const song = await createSongTest();
     return await prisma.repertoire.create({
       data: {
-        id: randomUUID(),
+        id: v7(),
         title: 'title',
         description: 'description',
         RepertoireSongs: {
           create: [
             {
-              id: randomUUID(),
+              id: v7(),
               label: 'label',
               lyrics: 'lyrics',
               title: 'title',
@@ -55,7 +55,7 @@ describe('PrismaEventRepository test', () => {
   async function createUserTest() {
     return await prisma.users.create({
       data: {
-        email: `email${randomUUID()}@test.com`,
+        email: `email${v7()}@test.com`,
         name: 'name',
       },
     });
@@ -71,7 +71,7 @@ describe('PrismaEventRepository test', () => {
   });
 
   it('should create an event without moments', async () => {
-    const id = randomUUID();
+    const id = v7();
     const user = await createUserTest();
     const event = new EventEntity({
       id: id,
@@ -95,11 +95,12 @@ describe('PrismaEventRepository test', () => {
       ownerId: user.id,
       createdAt: expect.any(Date),
       updatedAt: expect.any(Date),
+      type: null,
     });
   });
 
   it('should create an event with moments', async () => {
-    const id = randomUUID();
+    const id = v7();
     const user = await createUserTest();
     const repertoire = await createRepertoireTest();
     const eventMoment1 = new EventMoment({
@@ -146,7 +147,7 @@ describe('PrismaEventRepository test', () => {
   });
 
   it('should find an event by id', async () => {
-    const id = randomUUID();
+    const id = v7();
     const user = await createUserTest();
     const repertoire = await createRepertoireTest();
     const eventMoment1 = new EventMoment({
@@ -210,7 +211,7 @@ describe('PrismaEventRepository test', () => {
   });
 
   it('should return null when event is not found', async () => {
-    const result = await repository.findById(randomUUID());
+    const result = await repository.findById(v7());
 
     expect(result).toBeNull();
   });

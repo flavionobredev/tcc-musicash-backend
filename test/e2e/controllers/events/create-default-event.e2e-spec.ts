@@ -143,38 +143,46 @@ describe('EventController (e2e): create default event', () => {
   it('/events (POST): should create event with default values', async () => {
     const now = new Date().toISOString();
 
-    return request(app.getHttpServer())
+    const result = await request(app.getHttpServer())
       .post('/api/events')
       .set('Authorization', `Bearer ${firebaseAuth.getToken()}`)
       .send({
         title: 'Event title',
         startDate: now,
-      })
-      .expect(201)
-      .expect({
+      });
+
+    expect(result.status).toBe(201);
+    expect(result.body).toEqual(
+      expect.objectContaining({
         title: 'Event title',
         ownerId: user.id,
         startDate: now,
-      });
+        id: expect.any(String),
+      }),
+    );
   });
 
   it('/events (POST): should create event with any type', async () => {
     const now = new Date().toISOString();
 
-    return request(app.getHttpServer())
+    const result = await request(app.getHttpServer())
       .post('/api/events')
       .set('Authorization', `Bearer ${firebaseAuth.getToken()}`)
       .send({
         title: 'Event title',
         startDate: now,
-        type: "Seminário de Vida"
-      })
-      .expect(201)
-      .expect({
+        type: 'Seminário de Vida',
+      });
+
+    expect(result.status).toBe(201);
+    expect(result.body).toEqual(
+      expect.objectContaining({
         title: 'Event title',
         ownerId: user.id,
         startDate: now,
-        type: "seminario-de-vida"
-      });
+        type: 'seminario-de-vida',
+        id: expect.any(String),
+      }),
+    );
   });
 });

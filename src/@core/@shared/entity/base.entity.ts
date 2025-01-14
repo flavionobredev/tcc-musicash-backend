@@ -1,5 +1,4 @@
-import { randomUUID } from 'node:crypto';
-import { isUUID } from '../validators/string.validator';
+import { v7, validate } from 'uuid';
 
 export class BaseEntity {
   public readonly id: string;
@@ -7,10 +6,10 @@ export class BaseEntity {
   public updatedAt: Date;
 
   constructor(props: BaseEntity.Constructor = {}) {
-    this.id = props.id ?? randomUUID();
+    this.id = props.id ?? v7();
     this.createdAt = props.createdAt ?? new Date();
     this.updatedAt = props.updatedAt;
-    if (!isUUID(this.id)) {
+    if (!validate(this.id)) {
       throw new Error('Invalid UUID');
     }
 

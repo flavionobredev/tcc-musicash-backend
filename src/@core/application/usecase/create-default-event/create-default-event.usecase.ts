@@ -22,6 +22,7 @@ export type CreateDefaultEventOutputDTO = {
   endDate: Date;
   description: string;
   type: string;
+  id: string;
 };
 
 export class CreateDefaultEventUsecase {
@@ -73,6 +74,7 @@ export class CreateDefaultEventUsecase {
       endDate: event.endDate,
       description: event.description,
       type: event.type,
+      id: event.id,
     };
   }
 }

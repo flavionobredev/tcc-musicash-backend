@@ -1,7 +1,7 @@
-import { randomUUID } from 'crypto';
 import { EventRepository } from 'src/@core/domain/event/repository/event.repository';
 import { RepertoireRepository } from 'src/@core/domain/repertoire/repository/repertoire.repository';
 import { UserRepository } from 'src/@core/domain/user/repository/user.repository';
+import { v7 } from 'uuid';
 import { UserNotFoundException } from '../../exception';
 import { CreateDefaultEventUsecase } from './create-default-event.usecase';
 
@@ -21,7 +21,7 @@ describe('CreateDefaultEventUsecase', () => {
   });
 
   it('should be possible to create a default event', async () => {
-    const userId = randomUUID();
+    const userId = v7();
     const userRepositorySpy: UserRepository = {
       create: jest.fn(),
       findById: jest.fn().mockResolvedValue({ id: userId }),
@@ -65,7 +65,7 @@ describe('CreateDefaultEventUsecase', () => {
         userRepositorySpy,
       ).execute({
         title: 'Event Title',
-        ownerId: randomUUID(),
+        ownerId: v7(),
         startDate: new Date(),
       }),
     ).rejects.toBeInstanceOf(UserNotFoundException);
