@@ -6,11 +6,20 @@ import {
   IsString,
   MinDate,
 } from 'class-validator';
+import slugify from 'slugify';
 
 export class CreateDefaultEventInputDTO {
   @IsString()
   @IsNotEmpty()
   title: string;
+
+  @IsString()
+  @IsOptional()
+  @Transform(({ value }) => {
+    if (!value) return value;
+    return slugify(value, { lower: true, locale: 'pt-BR' });
+  })
+  type?: string;
 
   // @IsString()
   // @IsNotEmpty()

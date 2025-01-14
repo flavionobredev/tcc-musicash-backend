@@ -157,4 +157,24 @@ describe('EventController (e2e): create default event', () => {
         startDate: now,
       });
   });
+
+  it('/events (POST): should create event with any type', async () => {
+    const now = new Date().toISOString();
+
+    return request(app.getHttpServer())
+      .post('/api/events')
+      .set('Authorization', `Bearer ${firebaseAuth.getToken()}`)
+      .send({
+        title: 'Event title',
+        startDate: now,
+        type: "Seminário de Vida"
+      })
+      .expect(201)
+      .expect({
+        title: 'Event title',
+        ownerId: user.id,
+        startDate: now,
+        type: "seminario-de-vida"
+      });
+  });
 });

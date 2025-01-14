@@ -8,6 +8,7 @@ type EventConstructor = BaseEntity.Constructor & {
   ownerId: string;
   startDate: Date;
   description?: string;
+  type?: string;
   // membersIds?: string[];
   // managersIds?: string[];
   endDate?: Date;
@@ -19,6 +20,7 @@ export class EventEntity extends BaseEntity {
   private _description: string;
   private _startDate: Date;
   private _endDate: Date;
+  private _type: string;
   // private _membersIds: string[];
   // private _managersIds: string[];
   private _ownerId: string;
@@ -30,6 +32,7 @@ export class EventEntity extends BaseEntity {
     this._description = props.description;
     this._startDate = props.startDate;
     this._endDate = props.endDate;
+    this._type = props.type;
     // this._membersIds = props.membersIds || [];
     // this._managersIds = props.managersIds || [];
     this._ownerId = props.ownerId;
@@ -49,6 +52,9 @@ export class EventEntity extends BaseEntity {
     }
     if (this._endDate && this._endDate < this._startDate) {
       throw new EntityValidationException('Invalid endDate');
+    }
+    if (this._type && this._type.length > 255) {
+      throw new EntityValidationException('Invalid type');
     }
     // if (
     //   this._managersIds.length &&
@@ -89,6 +95,10 @@ export class EventEntity extends BaseEntity {
 
   get description() {
     return this._description;
+  }
+
+  get type() {
+    return this._type;
   }
 
   addMoment(moment: EventMoment) {

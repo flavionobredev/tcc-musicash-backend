@@ -20,6 +20,7 @@ export class PrismaEventRepository implements EventRepository {
         id: entity.id,
         title: entity.title,
         description: entity.description,
+        type: entity.type,
         startDate: entity.startDate,
         endDate: entity.endDate,
         owner: {
@@ -74,6 +75,7 @@ export class PrismaEventRepository implements EventRepository {
       title: result.title,
       description: result.description,
       startDate: result.startDate,
+      type: result.type,
       endDate: result.endDate,
       ownerId: result.ownerId,
     });

@@ -1,6 +1,7 @@
 model Events {
   id           String         @id @default(uuid()) @map("id")
   title        String         @map("title")
+  type         String?        @map("type")
   description  String?        @map("description")
   startDate    DateTime       @map("start_date")
   endDate      DateTime?      @map("end_date")

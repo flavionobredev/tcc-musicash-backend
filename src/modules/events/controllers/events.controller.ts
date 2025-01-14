@@ -23,6 +23,7 @@ export class EventsController {
       startDate: body.startDate,
       endDate: body.endDate,
       description: body.description,
+      type: body.type,
     });
 
     return result;

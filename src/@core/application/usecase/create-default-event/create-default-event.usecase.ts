@@ -12,6 +12,7 @@ export type CreateDefaultEventInputDTO = {
   startDate: Date;
   endDate?: Date;
   description?: string;
+  type?: string;
 };
 
 export type CreateDefaultEventOutputDTO = {
@@ -20,6 +21,7 @@ export type CreateDefaultEventOutputDTO = {
   startDate: Date;
   endDate: Date;
   description: string;
+  type: string;
 };
 
 export class CreateDefaultEventUsecase {
@@ -56,6 +58,7 @@ export class CreateDefaultEventUsecase {
       startDate: input.startDate,
       endDate: input.endDate,
       ownerId: input.ownerId,
+      type: input.type,
     });
 
     event.addMoment(moment);
@@ -69,6 +72,7 @@ export class CreateDefaultEventUsecase {
       startDate: event.startDate,
       endDate: event.endDate,
       description: event.description,
+      type: event.type,
     };
   }
 }

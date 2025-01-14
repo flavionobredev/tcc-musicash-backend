@@ -7,7 +7,7 @@ import {
 } from 'test/@shared/utils/prisma/db-connection.util';
 import { PrismaUserRepository } from './prisma-user.repository';
 
-describe('PrismaSongRepository', () => {
+describe('PrismaUserRepository', () => {
   let prisma: PrismaClient;
 
   let repository: PrismaUserRepository;
@@ -37,6 +37,7 @@ describe('PrismaSongRepository', () => {
       id: user.id,
       email: user.email,
       name: user.name,
+      picture: null,
       createdAt: expect.any(Date),
       updatedAt: undefined,
     });
@@ -58,6 +59,7 @@ describe('PrismaSongRepository', () => {
       id: user.id,
       email: user.email,
       name: user.name,
+      picture: null,
       createdAt: expect.any(Date),
       updatedAt: undefined,
     });
