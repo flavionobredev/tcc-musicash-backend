@@ -6,6 +6,7 @@ model Events {
   startDate    DateTime       @map("start_date")
   endDate      DateTime?      @map("end_date")
   ownerId      String         @map("owner_id")
+  slug         String         @map("slug")
   owner        Users          @relation(fields: [ownerId], references: [id])
   eventMoments EventMoments[]
   createdAt    DateTime       @default(now()) @map("created_at")

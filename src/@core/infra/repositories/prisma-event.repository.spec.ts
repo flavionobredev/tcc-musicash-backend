@@ -96,6 +96,7 @@ describe('PrismaEventRepository test', () => {
       createdAt: expect.any(Date),
       updatedAt: expect.any(Date),
       type: null,
+      slug: expect.any(String),
     });
   });
 
@@ -175,6 +176,7 @@ describe('PrismaEventRepository test', () => {
         startDate: new Date(),
         endDate: new Date(),
         ownerId: user.id,
+        slug: 'slug',
         eventMoments: {
           create: [
             {

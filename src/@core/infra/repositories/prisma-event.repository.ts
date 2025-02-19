@@ -23,6 +23,7 @@ export class PrismaEventRepository implements EventRepository {
         type: entity.type,
         startDate: entity.startDate,
         endDate: entity.endDate,
+        slug: entity.slug,
         owner: {
           connect: {
             id: entity.ownerId,

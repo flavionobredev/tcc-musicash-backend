@@ -18,7 +18,7 @@
     "test:cov": "jest --coverage --runInBand --watchAll=false",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "DATABASE_URL=file:./prisma/testinge2e.db jest --config ./test/jest-e2e.json",
-    "prisma:dbpush": "prisma db push --schema=./prisma/schemas"
+    "prisma:dbpush": "prisma db push --schema=./prisma/schemas --force-reset"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
