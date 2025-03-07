@@ -23,6 +23,7 @@ export type CreateDefaultEventOutputDTO = {
   description: string;
   type: string;
   id: string;
+  slug: string;
 };
 
 export class CreateDefaultEventUsecase {
@@ -75,6 +76,7 @@ export class CreateDefaultEventUsecase {
       description: event.description,
       type: event.type,
       id: event.id,
+      slug: event.slug,
     };
   }
 }

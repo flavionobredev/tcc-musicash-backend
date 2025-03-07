@@ -2,6 +2,7 @@ import { Types } from 'mongoose';
 import { BaseEntity } from 'src/@core/@shared/entity/base.entity';
 import { EntityValidationException } from 'src/@core/@shared/exception/domain.exception';
 import { EventMoment } from './event-moment.entity';
+import slugify from 'slugify';
 
 type EventConstructor = BaseEntity.Constructor & {
   title: string;
@@ -90,6 +91,10 @@ export class EventEntity extends BaseEntity {
 
   get type() {
     return this._type;
+  }
+
+  get slug() {
+    return slugify(`${this.id}-${this._title}`, { lower: true });
   }
 
   addMoment(moment: EventMoment) {

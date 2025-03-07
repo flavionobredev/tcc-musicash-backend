@@ -120,4 +120,24 @@ describe('EventEntity unit test', () => {
 
     expect(() => event.addMoment(moment)).toThrow('Moment already exists');
   });
+
+  it('should return the event slug', () => {
+    const event1 = new EventEntity({
+      title: 'Event Title',
+      description: 'Event Description',
+      ownerId: randomUUID(),
+      startDate: new Date(),
+    });
+
+    expect(event1.slug).toBe(`${event1.id}-event-title`);
+
+    const event2 = new EventEntity({
+      title: 'Another Event Title',
+      description: 'Another Event Description',
+      ownerId: randomUUID(),
+      startDate: new Date(),
+    });
+
+    expect(event2.slug).toBe(`${event2.id}-another-event-title`);
+  });
 });
