@@ -1,6 +1,6 @@
+import { Types } from 'mongoose';
 import { BaseEntity } from 'src/@core/@shared/entity/base.entity';
 import { EntityValidationException } from 'src/@core/@shared/exception/domain.exception';
-import { isUUID } from 'src/@core/@shared/validators/string.validator';
 import { EventMomentMember } from '../value-object/event-moment-member.vo';
 
 type EventMomentConstructor = BaseEntity.Constructor & {
@@ -38,7 +38,7 @@ export class EventMoment extends BaseEntity {
     if (this._startDate && this._endDate && this._endDate < this._startDate) {
       throw new EntityValidationException('Invalid endDate');
     }
-    if (this._repertoireId && !isUUID(this._repertoireId)) {
+    if (this._repertoireId && !Types.ObjectId.isValid(this._repertoireId)) {
       throw new EntityValidationException('Invalid repertoireId');
     }
     if (

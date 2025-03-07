@@ -1,4 +1,4 @@
-import { randomUUID } from 'node:crypto';
+import { makeId } from 'test/@shared/generators/id.generator';
 import { EventMoment } from './event-moment.entity';
 import { EventEntity } from './event.entity';
 
@@ -7,7 +7,7 @@ describe('EventEntity unit test', () => {
     const event = new EventEntity({
       title: 'Event Title',
       description: 'Event Description',
-      ownerId: randomUUID(),
+      ownerId: makeId(),
       startDate: new Date(),
     });
 
@@ -21,7 +21,7 @@ describe('EventEntity unit test', () => {
         new EventEntity({
           title: '',
           description: 'Event Description',
-          ownerId: randomUUID(),
+          ownerId: makeId(),
           startDate: new Date(),
         }),
     ).toThrow('Invalid title');
@@ -41,7 +41,7 @@ describe('EventEntity unit test', () => {
         new EventEntity({
           title: 'Event Title',
           description: 'Event Description',
-          ownerId: randomUUID(),
+          ownerId: makeId(),
           startDate: null,
         }),
     ).toThrow('Invalid startDate');
@@ -53,7 +53,7 @@ describe('EventEntity unit test', () => {
         new EventEntity({
           title: 'Event Title',
           description: 'Event Description',
-          ownerId: randomUUID(),
+          ownerId: makeId(),
           startDate: new Date(),
           endDate: new Date('2021-01-01'),
         }),
@@ -66,7 +66,7 @@ describe('EventEntity unit test', () => {
   //       new EventEntity({
   //         title: 'Event Title',
   //         description: 'Event Description',
-  //         ownerId: randomUUID(),
+  //         ownerId: makeId(),
   //         startDate: new Date(),
   //         managersIds: ['invalid-id'],
   //       }),
@@ -79,7 +79,7 @@ describe('EventEntity unit test', () => {
   //       new EventEntity({
   //         title: 'Event Title',
   //         description: 'Event Description',
-  //         ownerId: randomUUID(),
+  //         ownerId: makeId(),
   //         startDate: new Date(),
   //         membersIds: ['invalid-id'],
   //       }),
@@ -90,7 +90,7 @@ describe('EventEntity unit test', () => {
     const event = new EventEntity({
       title: 'Event Title',
       description: 'Event Description',
-      ownerId: randomUUID(),
+      ownerId: makeId(),
       startDate: new Date(),
     });
 
@@ -108,7 +108,7 @@ describe('EventEntity unit test', () => {
     const event = new EventEntity({
       title: 'Event Title',
       description: 'Event Description',
-      ownerId: randomUUID(),
+      ownerId: makeId(),
       startDate: new Date(),
     });
 

@@ -1,4 +1,4 @@
-import { randomUUID } from 'crypto';
+import { makeId } from 'test/@shared/generators/id.generator';
 import {
   EventMomentMember,
   EventMomentMemberAttribute,
@@ -6,7 +6,7 @@ import {
 
 describe('EventMomentMemberValueObject unit test', () => {
   it('should be possible to create an instance of EventMomentMemberValueObject', () => {
-    const eventMomentMember = new EventMomentMember(randomUUID(), [
+    const eventMomentMember = new EventMomentMember(makeId(), [
       EventMomentMemberAttribute.PLAYER,
     ]);
 
@@ -20,13 +20,13 @@ describe('EventMomentMemberValueObject unit test', () => {
   });
 
   it('should throw an error if the attribute is invalid', () => {
-    expect(() => new EventMomentMember(randomUUID(), [])).toThrow(
+    expect(() => new EventMomentMember(makeId(), [])).toThrow(
       'Invalid attribute',
     );
   });
 
   it('should throw an error if the attribute is invalid', () => {
-    expect(() => new EventMomentMember(randomUUID(), [null])).toThrow(
+    expect(() => new EventMomentMember(makeId(), [null])).toThrow(
       'Invalid attribute',
     );
   });

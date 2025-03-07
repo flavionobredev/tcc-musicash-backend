@@ -1,4 +1,4 @@
-import { randomUUID } from 'crypto';
+import { makeId } from 'test/@shared/generators/id.generator';
 import {
   EventMomentMember,
   EventMomentMemberAttribute,
@@ -53,7 +53,7 @@ describe('EventMomentEntity unit test', () => {
       title: 'Event Moment Title',
     });
 
-    const repertoireId = randomUUID();
+    const repertoireId = makeId();
 
     eventMoment.changeRepertoireId(repertoireId);
 
@@ -75,10 +75,10 @@ describe('EventMomentEntity unit test', () => {
       title: 'Event Moment Title',
     });
 
-    const singer = new EventMomentMember(randomUUID(), [
+    const singer = new EventMomentMember(makeId(), [
       EventMomentMemberAttribute.SINGER,
     ]);
-    const singerAndPlayer = new EventMomentMember(randomUUID(), [
+    const singerAndPlayer = new EventMomentMember(makeId(), [
       EventMomentMemberAttribute.SINGER,
       EventMomentMemberAttribute.PLAYER,
     ]);

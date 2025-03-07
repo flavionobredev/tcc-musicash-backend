@@ -1,4 +1,4 @@
-import { v7, validate } from 'uuid';
+import { Types } from 'mongoose';
 
 export class BaseEntity {
   public readonly id: string;
@@ -6,11 +6,11 @@ export class BaseEntity {
   public updatedAt: Date;
 
   constructor(props: BaseEntity.Constructor = {}) {
-    this.id = props.id ?? v7();
+    this.id = props.id ?? new Types.ObjectId().toHexString();
     this.createdAt = props.createdAt ?? new Date();
     this.updatedAt = props.updatedAt;
-    if (!validate(this.id)) {
-      throw new Error('Invalid UUID');
+    if (!Types.ObjectId.isValid(this.id)) {
+      throw new Error('Invalid ObjectId');
     }
 
     if (!this.createdAt || isNaN(this.createdAt.getTime())) {

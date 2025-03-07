@@ -1,26 +1,17 @@
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { CreateDefaultEventUsecase } from 'src/@core/application/usecase';
-import {
-  PrismaEventRepository,
-  PrismaRepertoireRepository,
-  PrismaUserRepository,
-} from 'src/@core/infra/repositories';
+
 import { DatabaseModule } from 'src/infra/database/database.module';
-import { DbPrismaClient } from 'src/infra/database/prisma';
+
 import { createAppConfig } from 'src/main/factories/configure-app';
 import { AuthModule } from 'src/modules/auth/auth.module';
 import { EventsController } from 'src/modules/events/controllers';
 import * as request from 'supertest';
 import { FirebaseAuth } from 'test/@shared/utils/firebase/auth';
-import {
-  makeTestPrismaClient,
-  removeTestPrismaClient,
-} from 'test/@shared/utils/prisma/db-connection.util';
 
 describe('EventController (e2e): create default event', () => {
   let app: INestApplication;
-  let prisma: DbPrismaClient;
   const firebaseAuth = new FirebaseAuth(
     process.env.GOOGLE_FIREBASE_TEST_API_KEY,
   );
@@ -32,39 +23,28 @@ describe('EventController (e2e): create default event', () => {
       controllers: [EventsController],
       providers: [
         {
-          provide: DbPrismaClient,
-          useFactory: () => {
-            return makeTestPrismaClient();
-          },
-        },
-        {
           provide: CreateDefaultEventUsecase,
-          useFactory: (prisma) => {
-            return new CreateDefaultEventUsecase(
-              new PrismaRepertoireRepository(prisma),
-              new PrismaEventRepository(prisma),
-              new PrismaUserRepository(prisma),
-            );
+          useFactory: (repertoire, event, user) => {
+            return new CreateDefaultEventUsecase(repertoire, event, user);
           },
-          inject: [DbPrismaClient],
         },
       ],
     }).compile();
 
     app = createAppConfig(moduleFixture.createNestApplication());
-    prisma = moduleFixture.get<DbPrismaClient>(DbPrismaClient);
+    // prisma = moduleFixture.get<DbPrismaClient>(DbPrismaClient);
     await app.init();
     await firebaseAuth.initWithUser();
-    user = await prisma.users.create({
-      data: {
-        name: 'Teste',
-        email: firebaseAuth.getUsername(),
-      },
-    });
+    // user = await prisma.users.create({
+    //   data: {
+    //     name: 'Teste',
+    //     email: firebaseAuth.getUsername(),
+    //   },
+    // });
   });
 
   afterAll(async () => {
-    await removeTestPrismaClient();
+    // await removeTestPrismaClient();
     await firebaseAuth.removeUser();
     await app.close();
   });

@@ -1,4 +1,4 @@
-import { randomUUID } from 'node:crypto';
+import { makeId } from 'test/@shared/generators/id.generator';
 import { BaseEntity } from './base.entity';
 
 describe('BaseEntity', () => {
@@ -8,13 +8,15 @@ describe('BaseEntity', () => {
   });
 
   it('should be create passing an id', () => {
-    const id = randomUUID();
+    const id = makeId();
     const entity = new BaseEntity({ id });
     expect(entity.id).toBe(id);
   });
 
   it('should throw an error if the id is invalid', () => {
-    expect(() => new BaseEntity({ id: 'invalid-id' })).toThrow('Invalid UUID');
+    expect(() => new BaseEntity({ id: 'invalid-id' })).toThrow(
+      'Invalid ObjectId',
+    );
   });
 
   it('should be created with a createdAt date', () => {

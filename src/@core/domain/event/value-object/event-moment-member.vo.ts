@@ -1,4 +1,4 @@
-import { isUUID } from 'src/@core/@shared/validators/string.validator';
+import { Types } from 'mongoose';
 
 export enum EventMomentMemberAttribute {
   SINGER = 'SINGER',
@@ -11,7 +11,7 @@ export class EventMomentMember {
   attributes: EventMomentMemberAttribute[];
 
   constructor(userId: string, attribute: EventMomentMemberAttribute[]) {
-    if (!userId || !isUUID(userId)) {
+    if (!userId || !Types.ObjectId.isValid(userId)) {
       throw new Error('Invalid userId');
     }
     if (

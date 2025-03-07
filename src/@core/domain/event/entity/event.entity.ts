@@ -1,6 +1,6 @@
+import { Types } from 'mongoose';
 import { BaseEntity } from 'src/@core/@shared/entity/base.entity';
 import { EntityValidationException } from 'src/@core/@shared/exception/domain.exception';
-import { isUUID } from 'src/@core/@shared/validators/string.validator';
 import { EventMoment } from './event-moment.entity';
 
 type EventConstructor = BaseEntity.Constructor & {
@@ -44,7 +44,7 @@ export class EventEntity extends BaseEntity {
     if (!this._title || this._title.length > 255) {
       throw new EntityValidationException('Invalid title');
     }
-    if (!isUUID(this._ownerId)) {
+    if (!Types.ObjectId.isValid(this._ownerId)) {
       throw new EntityValidationException('Invalid ownerId');
     }
     if (!this._startDate) {
@@ -56,15 +56,6 @@ export class EventEntity extends BaseEntity {
     if (this._type && this._type.length > 255) {
       throw new EntityValidationException('Invalid type');
     }
-    // if (
-    //   this._managersIds.length &&
-    //   this._managersIds.some((id) => !isUUID(id))
-    // ) {
-    //   throw new EntityValidationException('Invalid managersIds');
-    // }
-    // if (this._membersIds.length && this._membersIds.some((id) => !isUUID(id))) {
-    //   throw new EntityValidationException('Invalid membersIds');
-    // }
     if (
       this._moments.length &&
       !this._moments.every((moment) => moment instanceof EventMoment)
