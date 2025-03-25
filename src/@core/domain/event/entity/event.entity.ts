@@ -3,6 +3,7 @@ import { BaseEntity } from 'src/@core/@shared/entity/base.entity';
 import { EntityValidationException } from 'src/@core/@shared/exception/domain.exception';
 import { EventMoment } from './event-moment.entity';
 import slugify from 'slugify';
+import { nanoid } from 'src/@core/@shared/utils/nanoid';
 
 type EventConstructor = BaseEntity.Constructor & {
   title: string;
@@ -14,6 +15,7 @@ type EventConstructor = BaseEntity.Constructor & {
   // managersIds?: string[];
   endDate?: Date;
   moments?: EventMoment[];
+  slug?: string;
 };
 
 export class EventEntity extends BaseEntity {
@@ -26,6 +28,7 @@ export class EventEntity extends BaseEntity {
   // private _managersIds: string[];
   private _ownerId: string;
   private _moments: EventMoment[];
+  private _slug: string;
 
   constructor(props: EventConstructor) {
     super(props);
@@ -38,6 +41,8 @@ export class EventEntity extends BaseEntity {
     // this._managersIds = props.managersIds || [];
     this._ownerId = props.ownerId;
     this._moments = props.moments || [];
+    this._slug =
+      props.slug || slugify(`${this._title}-${nanoid()}`, { lower: true });
     this.validate();
   }
 
@@ -94,7 +99,7 @@ export class EventEntity extends BaseEntity {
   }
 
   get slug() {
-    return slugify(`${this.id}-${this._title}`, { lower: true });
+    return this._slug;
   }
 
   addMoment(moment: EventMoment) {

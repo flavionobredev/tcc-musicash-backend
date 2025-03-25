@@ -129,15 +129,16 @@ describe('EventEntity unit test', () => {
       startDate: new Date(),
     });
 
-    expect(event1.slug).toBe(`${event1.id}-event-title`);
+    expect(event1.slug).toContain('event-title');
 
     const event2 = new EventEntity({
       title: 'Another Event Title',
       description: 'Another Event Description',
       ownerId: makeId(),
       startDate: new Date(),
+      slug: 'another-event-title',
     });
 
-    expect(event2.slug).toBe(`${event2.id}-another-event-title`);
+    expect(event2.slug).toBe(`another-event-title`);
   });
 });
