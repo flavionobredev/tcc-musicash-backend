@@ -30,9 +30,13 @@ describe('MongoDBUserRepository unit tests', () => {
       expect(userModel.updateOne).toHaveBeenCalledWith(
         { email: user.email },
         {
-          _id: user.id,
-          name: user.name,
-          picture: user.picture,
+          $set: {
+            name: user.name,
+            picture: user.picture,
+          },
+          $setOnInsert: {
+            _id: user.id,
+          },
         },
         { upsert: true },
       );

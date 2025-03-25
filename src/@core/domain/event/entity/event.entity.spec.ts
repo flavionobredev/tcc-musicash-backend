@@ -125,7 +125,7 @@ describe('EventEntity unit test', () => {
     const event1 = new EventEntity({
       title: 'Event Title',
       description: 'Event Description',
-      ownerId: randomUUID(),
+      ownerId: makeId(),
       startDate: new Date(),
     });
 
@@ -134,7 +134,7 @@ describe('EventEntity unit test', () => {
     const event2 = new EventEntity({
       title: 'Another Event Title',
       description: 'Another Event Description',
-      ownerId: randomUUID(),
+      ownerId: makeId(),
       startDate: new Date(),
     });
 

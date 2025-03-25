@@ -26,10 +26,11 @@ export class MongoDBEventRepository implements EventRepository {
       for (const moment of entity.moments) {
         await this.eventMomentsModel.create({
           _id: moment.id,
+          event: entity.id,
           title: moment.title,
           description: moment.description,
-          startDate: moment.startDate,
-          endDate: moment.endDate,
+          start_date: moment.startDate,
+          end_date: moment.endDate,
           repertoire: moment.repertoireId,
           members: moment.members.map((member) => ({
             user: member.userId,
@@ -69,7 +70,7 @@ export class MongoDBEventRepository implements EventRepository {
       createdAt: result.created_at,
     });
 
-    result.moments.forEach((moment: EventMomentSchemaType) => {
+    (result.moments as unknown as EventMomentSchemaType[]).forEach((moment) => {
       event.addMoment(
         new EventMoment({
           id: moment._id.toHexString(),
@@ -78,13 +79,13 @@ export class MongoDBEventRepository implements EventRepository {
           startDate: moment.start_date,
           endDate: moment.end_date,
           repertoireId: moment.repertoire.toHexString(),
-          members: moment.members.map(
-            (member) =>
-              new EventMomentMember(
-                member.user.toHexString(),
-                member.attributes as EventMomentMemberAttribute[],
-              ),
-          ),
+          // members: moment.members.map(
+          //   (member) =>
+          //     new EventMomentMember(
+          //       member.user.toHexString(),
+          //       member.attributes as EventMomentMemberAttribute[],
+          //     ),
+          // ),
         }),
       );
     });

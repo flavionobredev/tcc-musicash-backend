@@ -5,7 +5,8 @@ services:
       dockerfile: Dockerfile.dev
     ports:
       - "3010:3010"
-    entrypoint: sh -c "npm run start:dev"
+    entrypoint: sh -c "npm install && npm run start:dev"
+    container_name: tccmusicsh-api
     environment:
       FIREBASE_WEB_CONFIG: ${FIREBASE_WEB_CONFIG}
       GOOGLE_FIREBASE_TEST_API_KEY: ${GOOGLE_FIREBASE_TEST_API_KEY}

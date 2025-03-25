@@ -73,6 +73,16 @@ describe('MongoDBEventRepository unit tests', () => {
       expect(eventsModel.db.startSession).toHaveBeenCalled();
       expect(eventsModel.create).toHaveBeenCalled();
       expect(eventMomentsModel.create).toHaveBeenCalledTimes(2);
+      expect(eventMomentsModel.create).toHaveBeenCalledWith({
+        _id: expect.any(String),
+        event: expect.any(String),
+        title: 'any_title',
+        description: undefined,
+        start_date: expect.any(Date),
+        end_date: undefined,
+        repertoire: undefined,
+        members: [],
+      })
     });
   });
 

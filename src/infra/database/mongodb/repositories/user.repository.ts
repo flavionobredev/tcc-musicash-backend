@@ -18,9 +18,13 @@ export class MongoDBUserRepository implements UserRepository {
     await this.userModel.updateOne(
       { email: user.email },
       {
-        _id: user.id,
-        name: user.name,
-        picture: user.picture,
+        $set: {
+          name: user.name,
+          picture: user.picture,
+        },
+        $setOnInsert: {
+          _id: user.id,
+        },
       },
       { upsert: true },
     );

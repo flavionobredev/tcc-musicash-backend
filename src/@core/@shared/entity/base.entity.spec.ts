@@ -2,7 +2,7 @@ import { makeId } from 'test/@shared/generators/id.generator';
 import { BaseEntity } from './base.entity';
 
 describe('BaseEntity', () => {
-  it('should be created with a random UUID', () => {
+  it('should be created with a random id', () => {
     const entity = new BaseEntity();
     expect(entity.id).toBeDefined();
   });

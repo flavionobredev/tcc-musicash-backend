@@ -10,7 +10,11 @@ export const EventSchema = new Schema(
     end_date: Date,
     type: String,
     owner: { type: Schema.Types.ObjectId, ref: MongoModelsName.Users },
-    moments: [EventMomentSchema],
+    // moments: [EventMomentSchema],
+    moments: [{
+      type: Schema.Types.ObjectId,
+      ref: MongoModelsName.EventMoments,
+    }],
     created_at: {
       type: Date,
     },

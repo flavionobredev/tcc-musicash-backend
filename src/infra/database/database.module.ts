@@ -62,12 +62,12 @@ const makeModels = () => {
       useClass: MongoDBEventRepository,
     },
     {
-      provide: UserRepository,
-      useClass: MongoDBUserRepository,
-    },
-    {
       provide: RepertoireRepository,
       useClass: MongoDBRepertoireRepository,
+    },
+    {
+      provide: UserRepository,
+      useClass: MongoDBUserRepository,
     },
     {
       provide: SongRepository,
