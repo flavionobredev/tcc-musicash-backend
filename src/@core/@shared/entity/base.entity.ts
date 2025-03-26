@@ -21,6 +21,10 @@ export class BaseEntity {
       throw new Error('Invalid updatedAt');
     }
   }
+
+  toJSON() {
+    throw new Error('Method not implemented.');
+  }
 }
 
 export namespace BaseEntity {
