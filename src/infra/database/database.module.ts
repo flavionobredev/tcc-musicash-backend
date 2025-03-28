@@ -12,6 +12,7 @@ import {
   MongoDBUserRepository,
 } from './mongodb/repositories';
 import {
+  EventEngagementSchema,
   EventMomentSchema,
   EventSchema,
   RepertoireSchema,
@@ -26,6 +27,7 @@ const makeModels = () => {
   const map = {
     [MongoModelsName.Events]: EventSchema,
     [MongoModelsName.EventMoments]: EventMomentSchema,
+    [MongoModelsName.EventEngagements]: EventEngagementSchema,
     [MongoModelsName.Users]: UserSchema,
     [MongoModelsName.Songs]: SongSchema,
     [MongoModelsName.Repertoires]: RepertoireSchema,

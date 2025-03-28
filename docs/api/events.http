@@ -1,0 +1,15 @@
+### variables
+@apiBaseUrl = {{$dotenv REST_CLIENT_URL}}
+@apiToken = {{$dotenv REST_CLIENT_TOKEN}}
+
+### POST /api/events
+POST {{apiBaseUrl}}/api/events
+Content-Type: application/json
+Authorization: Bearer {{apiToken}}
+
+
+{
+  "title": "Event created at {{$datetime iso8601}}",
+  "description": "This is a test event created on {{$datetime iso8601}}",
+  "startDate": "{{$datetime iso8601}}"
+}

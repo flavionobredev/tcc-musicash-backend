@@ -5,6 +5,7 @@ import { Repertoire } from 'src/@core/domain/repertoire/entity/repertoire.entity
 import { RepertoireRepository } from 'src/@core/domain/repertoire/repository/repertoire.repository';
 import { UserRepository } from 'src/@core/domain/user/repository/user.repository';
 import { UserNotFoundException } from '../../exception';
+import { EventEngagement } from 'src/@core/domain/event/entity/event-engagement.entity';
 
 export type CreateDefaultEventInputDTO = {
   title: string;
@@ -65,8 +66,15 @@ export class CreateDefaultEventUsecase {
 
     event.addMoment(moment);
 
+    const ownerEngagement = EventEngagement.create({
+      userId: input.ownerId,
+      eventId: event.id,
+      role: EventEngagement.Roles.OWNER,
+    });
+
     await this.repertoireRepository.create(repertoire);
     await this.eventRepository.create(event);
+    await this.eventRepository.upsertEngagementByEventAndUser(ownerEngagement);
 
     return {
       title: event.title,

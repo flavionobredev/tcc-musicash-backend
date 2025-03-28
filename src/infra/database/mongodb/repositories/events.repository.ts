@@ -1,14 +1,15 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
+import { EventEngagement } from 'src/@core/domain/event/entity/event-engagement.entity';
 import { EventMoment } from 'src/@core/domain/event/entity/event-moment.entity';
 import { EventEntity } from 'src/@core/domain/event/entity/event.entity';
 import { EventRepository } from 'src/@core/domain/event/repository/event.repository';
-import {
-  EventMomentMember,
-  EventMomentMemberAttribute,
-} from 'src/@core/domain/event/value-object/event-moment-member.vo';
 import { MongoModelsName } from '../models.enum';
-import { EventMomentSchemaType, EventSchemaType } from '../schemas';
+import {
+  EventEngagementSchemaType,
+  EventMomentSchemaType,
+  EventSchemaType,
+} from '../schemas';
 
 @Injectable()
 export class MongoDBEventRepository implements EventRepository {
@@ -17,6 +18,8 @@ export class MongoDBEventRepository implements EventRepository {
     private readonly eventsModel: Model<EventSchemaType>,
     @Inject(MongoModelsName.EventMoments)
     private readonly eventMomentsModel: Model<EventMomentSchemaType>,
+    @Inject(MongoModelsName.EventEngagements)
+    private readonly eventEngagementsModel: Model<EventEngagementSchemaType>,
   ) {}
 
   async create(entity: EventEntity) {
@@ -91,5 +94,26 @@ export class MongoDBEventRepository implements EventRepository {
     });
 
     return event;
+  }
+
+  async upsertEngagementByEventAndUser(eventEngagement: EventEngagement) {
+    const json = eventEngagement.toJSON();
+
+    await this.eventEngagementsModel.updateOne(
+      {
+        event_id: json.eventId,
+        user_id: json.userId,
+      },
+      {
+        $set: {
+          role: json.role,
+          status: json.status,
+        },
+        $setOnInsert: {
+          _id: json.id,
+        },
+      },
+      { upsert: true },
+    );
   }
 }

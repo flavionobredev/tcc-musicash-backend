@@ -2,8 +2,14 @@ import { Model, Types } from 'mongoose';
 import { EventMoment } from 'src/@core/domain/event/entity/event-moment.entity';
 import { EventEntity } from 'src/@core/domain/event/entity/event.entity';
 import { EventMomentMemberAttribute } from 'src/@core/domain/event/value-object/event-moment-member.vo';
-import { EventMomentSchemaType, EventSchemaType } from '../schemas';
+import {
+  EventEngagementSchemaType,
+  EventMomentSchemaType,
+  EventSchemaType,
+} from '../schemas';
 import { MongoDBEventRepository } from './events.repository';
+import { EventEngagement } from 'src/@core/domain/event/entity/event-engagement.entity';
+import { makeId } from 'test/@shared/generators/id.generator';
 
 describe('MongoDBEventRepository unit tests', () => {
   const makeSut = () => {
@@ -26,8 +32,16 @@ describe('MongoDBEventRepository unit tests', () => {
       create: jest.fn(),
     } as unknown as Model<EventMomentSchemaType>;
 
-    const sut = new MongoDBEventRepository(eventsModel, eventMomentsModel);
-    return { sut, eventsModel, eventMomentsModel };
+    const eventEngagementsModel = {
+      updateOne: jest.fn(),
+    } as unknown as Model<EventEngagementSchemaType>;
+
+    const sut = new MongoDBEventRepository(
+      eventsModel,
+      eventMomentsModel,
+      eventEngagementsModel,
+    );
+    return { sut, eventsModel, eventMomentsModel, eventEngagementsModel };
   };
 
   describe('create function', () => {
@@ -82,7 +96,7 @@ describe('MongoDBEventRepository unit tests', () => {
         end_date: undefined,
         repertoire: undefined,
         members: [],
-      })
+      });
     });
   });
 
@@ -133,6 +147,39 @@ describe('MongoDBEventRepository unit tests', () => {
 
       expect(result).toBeInstanceOf(EventEntity);
       expect(result.moments).toHaveLength(1);
+    });
+  });
+
+  describe('createEngagement function', () => {
+    it('should create an engagement', async () => {
+      const { sut, eventEngagementsModel } = makeSut();
+
+      const eventEngagement = EventEngagement.create({
+        userId: makeId(),
+        eventId: makeId(),
+        role: EventEngagement.Roles.OWNER,
+      });
+
+      await sut.upsertEngagementByEventAndUser(eventEngagement);
+
+      const json = eventEngagement.toJSON();
+
+      expect(eventEngagementsModel.updateOne).toHaveBeenCalledWith(
+        {
+          event_id: json.eventId,
+          user_id: json.userId,
+        },
+        {
+          $set: {
+            role: json.role,
+            status: json.status,
+          },
+          $setOnInsert: {
+            _id: json.id,
+          },
+        },
+        { upsert: true },
+      );
     });
   });
 });

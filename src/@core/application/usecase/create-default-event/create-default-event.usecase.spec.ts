@@ -14,6 +14,7 @@ describe('CreateDefaultEventUsecase', () => {
   const eventRepositorySpy: EventRepository = {
     create: jest.fn(),
     findById: jest.fn(),
+    upsertEngagementByEventAndUser: jest.fn(),
   };
 
   beforeEach(() => {
@@ -48,6 +49,7 @@ describe('CreateDefaultEventUsecase', () => {
     expect(userRepositorySpy.findById).toHaveBeenCalledTimes(1);
     expect(repertoireRepositorySpy.create).toHaveBeenCalledTimes(1);
     expect(eventRepositorySpy.create).toHaveBeenCalledTimes(1);
+    expect(eventRepositorySpy.upsertEngagementByEventAndUser).toHaveBeenCalledTimes(1);
   });
 
   it('should throw an exception when user is not found', async () => {
